@@ -11,8 +11,8 @@ using RecordShop;
 namespace RecordShop.Migrations
 {
     [DbContext(typeof(RecordShopDbContext))]
-    [Migration("20250114145509_UpdateAlbumTable")]
-    partial class UpdateAlbumTable
+    [Migration("20250114153211_UpdateArtistFieldInAlbums")]
+    partial class UpdateArtistFieldInAlbums
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

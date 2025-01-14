@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RecordShop.Repositories;
 using RecordShop.Services;
+using RecordShop.Utils;
 
 namespace RecordShop
 {
@@ -34,6 +35,8 @@ namespace RecordShop
             builder.Services.AddScoped<AlbumService>();
 
             var app = builder.Build();
+
+            Seeder.AddAlbumData(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -26,7 +26,7 @@ namespace RecordShop.Services
 
         public List<Album> RetrieveAllAlbums()
         {
-            throw new NotImplementedException();
+            return _albumRepo.GetAllAlbums();
         }
 
         public Album UpdateAlbum()

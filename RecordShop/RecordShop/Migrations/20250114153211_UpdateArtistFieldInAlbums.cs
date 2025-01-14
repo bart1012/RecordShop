@@ -5,7 +5,7 @@
 namespace RecordShop.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateAlbumTable : Migration
+    public partial class UpdateArtistFieldInAlbums : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
