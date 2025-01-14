@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordShop", "RecordShop\RecordShop.csproj", "{52F70F5A-42D9-4E6A-827E-7E20F014DCC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52F70F5A-42D9-4E6A-827E-7E20F014DCC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F70F5A-42D9-4E6A-827E-7E20F014DCC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F70F5A-42D9-4E6A-827E-7E20F014DCC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F70F5A-42D9-4E6A-827E-7E20F014DCC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB2714D6-24E3-470C-8192-39CD7BC7F759}
+	EndGlobalSection
+EndGlobal
