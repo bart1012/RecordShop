@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using RecordShop.Repositories;
+using RecordShop.Services;
 
 namespace RecordShop
 {
@@ -5,6 +8,8 @@ namespace RecordShop
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine(System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development");
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -13,6 +18,20 @@ namespace RecordShop
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<RecordShopDbContext>(options =>
+            {
+                if (builder.Environment.IsDevelopment())
+                {
+
+                    options.UseInMemoryDatabase("InMemoryDB");
+                }
+                else if (builder.Environment.IsProduction())
+                {
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+                }
+            });
+            builder.Services.AddScoped<AlbumRepository>();
+            builder.Services.AddScoped<AlbumService>();
 
             var app = builder.Build();
 
