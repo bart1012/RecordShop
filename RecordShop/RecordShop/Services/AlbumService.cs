@@ -1,27 +1,35 @@
 ﻿using RecordShop.Classes;
 using RecordShop.Repositories;
+using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
+
 
 namespace RecordShop.Services
 {
     public interface IAlbumService
     {
         public List<Album> RetrieveAllAlbums();
-        public Album RetrieveAlbumByID();
-        public Album UpdateAlbum();
-        public bool DeleteAlbum();
+        public Album RetrieveAlbumByID(int id);
+        public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch);
+        public bool DeleteAlbum(int id);
+        public Album AddNewAlbum(Album album);
     }
-    public class AlbumService(AlbumRepository albumRepo) : IAlbumService
+    public class AlbumService(IAlbumRepository albumRepo) : IAlbumService
     {
-        private readonly AlbumRepository _albumRepo = albumRepo;
+        private readonly IAlbumRepository _albumRepo = albumRepo;
 
-        public bool DeleteAlbum()
+        public Album AddNewAlbum(Album album)
         {
-            throw new NotImplementedException();
+            return _albumRepo.InsertAlbum(album);
         }
 
-        public Album RetrieveAlbumByID()
+        public bool DeleteAlbum(int id)
         {
-            throw new NotImplementedException();
+            return _albumRepo.DeleteAlbum(id);
+        }
+
+        public Album? RetrieveAlbumByID(int id)
+        {
+            return _albumRepo.GetAlbumByID(id);
         }
 
         public List<Album> RetrieveAllAlbums()
@@ -29,9 +37,9 @@ namespace RecordShop.Services
             return _albumRepo.GetAllAlbums();
         }
 
-        public Album UpdateAlbum()
+        public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch)
         {
-            throw new NotImplementedException();
+            return _albumRepo.UpdateAlbumDetails(id, jsonPatch);
         }
     }
 
