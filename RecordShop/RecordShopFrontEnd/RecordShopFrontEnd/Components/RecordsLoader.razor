@@ -1,0 +1,12 @@
+﻿@using RecordShop.Classes
+
+<h3>RecordsLoader</h3>
+
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        HttpClient httpClient = new();
+        var data = httpClient.GetFromJsonAsync<List<Album>>("");
+        return base.OnInitializedAsync();
+    }
+}

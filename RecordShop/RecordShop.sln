@@ -5,7 +5,11 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecordShop", "RecordShop\RecordShop.csproj", "{52F70F5A-42D9-4E6A-827E-7E20F014DCC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordShop.Tests", "RecordShop.Tests\RecordShop.Tests.csproj", "{69EAEBAA-B7C1-4402-B6FF-96F0E0E5777A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecordShop.Tests", "RecordShop.Tests\RecordShop.Tests.csproj", "{69EAEBAA-B7C1-4402-B6FF-96F0E0E5777A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordShopFrontEnd", "RecordShopFrontEnd\RecordShopFrontEnd\RecordShopFrontEnd.csproj", "{B1EBBAB3-0224-4643-86CC-ABD9B4798E5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordShopFrontEnd.Client", "RecordShopFrontEnd\RecordShopFrontEnd.Client\RecordShopFrontEnd.Client.csproj", "{C6B40775-CAFF-4463-8763-070A30C137EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{69EAEBAA-B7C1-4402-B6FF-96F0E0E5777A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69EAEBAA-B7C1-4402-B6FF-96F0E0E5777A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69EAEBAA-B7C1-4402-B6FF-96F0E0E5777A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1EBBAB3-0224-4643-86CC-ABD9B4798E5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1EBBAB3-0224-4643-86CC-ABD9B4798E5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1EBBAB3-0224-4643-86CC-ABD9B4798E5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1EBBAB3-0224-4643-86CC-ABD9B4798E5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6B40775-CAFF-4463-8763-070A30C137EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6B40775-CAFF-4463-8763-070A30C137EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6B40775-CAFF-4463-8763-070A30C137EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6B40775-CAFF-4463-8763-070A30C137EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

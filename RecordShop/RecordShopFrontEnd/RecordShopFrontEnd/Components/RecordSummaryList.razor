@@ -1,0 +1,38 @@
+﻿@using RecordShop.Classes
+<div class="container grid">
+    @foreach(var album in albumList)
+    {
+        <div class="cell"><RecordSummary album="album"></RecordSummary></div>
+    }
+</div>
+
+@code {
+    public List<Album> albumList = [
+             new Album()
+                {
+                    ID = 1,
+                    Name = "In the Aeroplane Over the Sea",
+                    ArtistID = 1,
+                    ReleaseDate = 1998,
+                    TotalMinutes = 39.45,
+                },
+
+            new Album()
+                {
+                    ID = 2,
+                    Name = "OK Computer",
+                    ArtistID = 2,
+                    ReleaseDate = 1997,
+                    TotalMinutes = 53.25,
+                },
+
+            new Album
+                {
+                    ID = 3,
+                    Name = "Is This It",
+                    ArtistID = 3,
+                    ReleaseDate = 2001,
+                    TotalMinutes = 36.28,
+                }
+    ];
+}
