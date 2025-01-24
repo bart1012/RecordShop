@@ -1,4 +1,4 @@
-﻿namespace RecordShop.Classes
+﻿namespace RecordShop.Models
 {
     public class Genre
     {

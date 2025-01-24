@@ -1,11 +1,11 @@
-﻿using RecordShop.Classes;
+﻿using RecordShop.Models;
 using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 
 namespace RecordShop.Repositories
 {
     public interface IAlbumRepository
     {
-        public List<Album> GetAllAlbums();
+        public List<AlbumDTO> GetAllAlbums();
         public Album GetAlbumByID(int id);
         public Album UpdateAlbumDetails(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
@@ -45,9 +45,28 @@ namespace RecordShop.Repositories
             }
         }
 
-        public List<Album> GetAllAlbums()
+        public List<AlbumDTO> GetAllAlbums()
         {
-            return _db.Albums.ToList();
+            var albumDTOs = _db.Albums
+            .Select(album => new AlbumDTO
+            {
+                ID = album.ID,
+                Name = album.Name,
+                ReleaseDate = album.ReleaseDate,
+                TotalMinutes = album.TotalMinutes,
+                Artists = _db.Artists
+                    .Where(artist => artist.ID == album.ArtistID)
+                    .ToList(),
+                Genres = _db.AlbumGenres
+                    .Where(ag => ag.AlbumID == album.ID)
+                    .Select(ag => ag.Genre)
+                    .ToList(),
+                Songs = _db.AlbumSongs
+                .Where(albumSong => albumSong.AlbumID == album.ID)
+                .Select(aSRecord => aSRecord.Song).ToList()
+            }).ToList();
+
+            return albumDTOs;
         }
 
         public Album InsertAlbum(Album album)

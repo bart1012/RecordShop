@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using RecordShop.Classes;
+using RecordShop.Models;
 using RecordShop.Services;
 using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 
@@ -17,7 +16,7 @@ namespace RecordShop.Controllers
         [HttpGet]
         public IActionResult GetAllAlbums()
         {
-            List<Album> dbAlbumData = _service.RetrieveAllAlbums();
+            List<AlbumDTO> dbAlbumData = _service.RetrieveAllAlbums();
             if (dbAlbumData.IsNullOrEmpty()) return NoContent();
             else return Ok(dbAlbumData);
         }

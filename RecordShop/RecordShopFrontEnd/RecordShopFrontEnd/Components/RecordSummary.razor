@@ -1,5 +1,4 @@
-﻿@using RecordShop.Classes
-
+﻿
 <div class="card">
     <div class="card-image">
         <figure class="image">
@@ -13,21 +12,21 @@
 
             <div class="media-content">
                 <p class="title is-4">@album.Name</p>
-                <p class="subtitle is-6">@album.ArtistID</p>
-                <time datetime="@album.ReleaseDate"></time>
+                <p class="subtitle is-6">@album.Artists[0].Name</p>
+                <p class="subtitle is-6">@album.ReleaseDate.ToString("MMM dd yyyy")</p>
             </div>
         </div>
 
-        <div class="content">
+      @*   <div class="content">
             Album description 
             <br />
            
-        </div>
+        </div> *@
 
     </div>
 </div>
 
 @code {
     [Parameter]
-    public Album album{ get; set; }
+    public AlbumDTO album { get; set; }
 }

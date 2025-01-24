@@ -1,4 +1,4 @@
-﻿using RecordShop.Classes;
+﻿using RecordShop.Models;
 
 namespace RecordShop.Utils
 {
@@ -23,29 +23,22 @@ namespace RecordShop.Utils
 
             db.Albums.AddRange(
 
-                new Album()
-                {
-                    Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45,
-                },
+               new Album()
+               {
+                   Name = "In the Aeroplane Over the Sea",
+                   ArtistID = 1,
+                   ReleaseDate = new DateTime(1998, 2, 10), // February 10, 1998
+                   TotalMinutes = 39.45,
+               },
 
-                new Album()
-                {
-                    Name = "OK Computer",
-                    ArtistID = 2,
-                    ReleaseDate = 1997,
-                    TotalMinutes = 53.25,
-                },
+            new Album()
+            {
+                Name = "OK Computer",
+                ArtistID = 2,
+                ReleaseDate = new DateTime(1997, 5, 21), // May
 
-                new Album
-                {
-                    Name = "Is This It",
-                    ArtistID = 3,
-                    ReleaseDate = 2001,
-                    TotalMinutes = 36.28,
-                }
+            }
+
 
                 );
 

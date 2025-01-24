@@ -1,12 +1,54 @@
-﻿@using RecordShop.Classes
+﻿@rendermode InteractiveServer
 
-<h3>RecordsLoader</h3>
+@if (isLoading && dbData is null)
+{
+    <LoadingMessage></LoadingMessage>
+}
+else if (!isLoading && dbData is null)
+{
+    <div>Oops! There was an issue fetching your data. Please try again.</div>
+}
+else
+{
+    <RecordSummaryList albumData="dbData"></RecordSummaryList>
+}
 
 @code {
-    protected override Task OnInitializedAsync()
+    public List<AlbumDTO> dbData;
+    public bool isLoading;
+    public bool dbError;
+
+    protected override void OnInitialized()
     {
-        HttpClient httpClient = new();
-        var data = httpClient.GetFromJsonAsync<List<Album>>("");
-        return base.OnInitializedAsync();
+        isLoading = true;
+        dbData = null;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        try
+        {
+            // fetch data from backend API
+            HttpClient httpClient = new();
+            dbData = await httpClient.GetFromJsonAsync<List<AlbumDTO>>(new Uri("https://localhost:7195/Albums"));
+
+        }
+        catch (Exception e)
+        {
+            // Catch http call exceptions
+            dbData = null;
+            dbError = true;
+        }
+        finally
+        {
+            // Update the loading state and re-render the component
+            isLoading = false;
+            StateHasChanged(); 
+        }
     }
 }

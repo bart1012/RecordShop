@@ -1,0 +1,23 @@
+﻿<div class="card">
+    <div class="card-content">
+
+        <div class="media">
+
+            <div class="media-content">
+                <p class="subtitle is-6">@album.ArtistID</p>
+                <p class="subtitle is-6">@album.Name</p>
+
+                <p class="subtitle is-6">@album.TotalMinutes</p>
+                <p class="subtitle is-6">@album.ReleaseDate</p>
+                <p class="subtitle is-6">@album.</p>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Album album { get; set; }
+}

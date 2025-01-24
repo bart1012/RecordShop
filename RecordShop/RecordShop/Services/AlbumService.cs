@@ -1,4 +1,4 @@
-﻿using RecordShop.Classes;
+﻿using RecordShop.Models;
 using RecordShop.Repositories;
 using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 
@@ -7,7 +7,7 @@ namespace RecordShop.Services
 {
     public interface IAlbumService
     {
-        public List<Album> RetrieveAllAlbums();
+        public List<AlbumDTO> RetrieveAllAlbums();
         public Album RetrieveAlbumByID(int id);
         public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
@@ -32,7 +32,7 @@ namespace RecordShop.Services
             return _albumRepo.GetAlbumByID(id);
         }
 
-        public List<Album> RetrieveAllAlbums()
+        public List<AlbumDTO> RetrieveAllAlbums()
         {
             return _albumRepo.GetAllAlbums();
         }

@@ -9,7 +9,7 @@ namespace RecordShop
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine(System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development");
+
 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +28,8 @@ namespace RecordShop
                 }
                 else if (builder.Environment.IsProduction())
                 {
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+                    options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopDB;User Id=bart1012;Password=Scamper123!;TrustServerCertificate = True");
+
                 }
             });
             builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
@@ -36,14 +37,17 @@ namespace RecordShop
 
             var app = builder.Build();
 
-            Seeder.AddAlbumData(app);
-
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                Seeder.AddAlbumData(app);
             }
+
+
+            // Configure the HTTP request pipeline.
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
 
             app.UseHttpsRedirection();
 

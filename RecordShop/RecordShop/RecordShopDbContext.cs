@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RecordShop.Classes;
+using RecordShop.Models;
 namespace RecordShop
 {
     public class RecordShopDbContext(DbContextOptions<RecordShopDbContext> options) : DbContext(options)
@@ -10,6 +10,9 @@ namespace RecordShop
         public DbSet<Genre> Genres { get; set; }
         public DbSet<AlbumArtist> AlbumArtists { get; set; }
         public DbSet<AlbumGenre> AlbumGenres { get; set; }
+        public DbSet<AlbumSong> AlbumSongs { get; set; }
+
 
     }
 }
+
