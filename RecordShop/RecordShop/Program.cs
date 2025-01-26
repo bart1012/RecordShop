@@ -34,6 +34,8 @@ namespace RecordShop
             });
             builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
             builder.Services.AddScoped<IAlbumService, AlbumService>();
+            builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
+
 
             var app = builder.Build();
 

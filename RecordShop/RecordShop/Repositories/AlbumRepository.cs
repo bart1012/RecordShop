@@ -56,10 +56,11 @@ namespace RecordShop.Repositories
                 TotalMinutes = album.TotalMinutes,
                 Artists = _db.Artists
                     .Where(artist => artist.ID == album.ArtistID)
+                    .Select(a => a.Name)
                     .ToList(),
                 Genres = _db.AlbumGenres
                     .Where(ag => ag.AlbumID == album.ID)
-                    .Select(ag => ag.Genre)
+                    .Select(ag => ag.Genre.Name)
                     .ToList(),
                 Songs = _db.AlbumSongs
                 .Where(albumSong => albumSong.AlbumID == album.ID)

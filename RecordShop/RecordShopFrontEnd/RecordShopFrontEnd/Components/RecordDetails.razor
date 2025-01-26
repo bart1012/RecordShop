@@ -1,23 +1,113 @@
-﻿<div class="card">
+﻿@rendermode InteractiveServer
+
+<div class="card" style="width: 200px">
+    <header class="card-header">
+    
+
+        <p @ref="artistParagraph"  class="card-header-title" contenteditable=@enableEditing @oninput="@ChangeContent">@aName</p>
+
+
+    </header>
     <div class="card-content">
-
-        <div class="media">
-
-            <div class="media-content">
-                <p class="subtitle is-6">@album.ArtistID</p>
-                <p class="subtitle is-6">@album.Name</p>
-
-                <p class="subtitle is-6">@album.TotalMinutes</p>
-                <p class="subtitle is-6">@album.ReleaseDate</p>
-                <p class="subtitle is-6">@album.</p>
-                
-            </div>
+        <div class="content">
+            <p>@album.Artists[0]</p>
+            <p>@album.ReleaseDate</p>
+            @foreach(var genre in album.Genres)
+            {
+                <p>@genre</p>
+            }
+            @foreach (var song in album.Songs)
+            {
+                <p>@song.Name</p>
+            }
         </div>
-
     </div>
+    <footer class="card-footer">
+        <a @onclick="Save" href="#" class="card-footer-item">Save</a>
+        <a @onclick="TurnOnEditing" href="#" class="card-footer-item">Edit</a>
+        <a href="#" class="card-footer-item">Delete</a>
+    </footer>
 </div>
+
+
+
 
 @code {
     [Parameter]
-    public Album album { get; set; }
+    public AlbumDTO album { get; set; }
+
+    public string aName { get; set; }
+
+    public bool enableEditing = false;
+
+    public JsonPatchDocument jsonPatchDocument = new JsonPatchDocument();
+
+    private ElementReference artistParagraph;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        aName = album.Name;
+    }
+
+    public void AddPatchOperation(string name)
+    {
+        jsonPatchDocument.Replace("/Name", name);
+    }
+
+    private CancellationTokenSource debounceCts;
+
+    public async Task ChangeContent()
+    {
+        debounceCts?.Cancel();
+        debounceCts = new CancellationTokenSource();
+        var token = debounceCts.Token;
+
+        try
+        {
+            // Delay to handle continuous events like backspace
+            await Task.Delay(1000, token);
+            aName = await JSRuntime.InvokeAsync<string>("getContent", artistParagraph);
+        }
+        catch (TaskCanceledException)
+        {
+            // Ignore canceled tasks
+        }
+    }
+
+
+
+    public async Task TurnOnEditing()
+    {
+        enableEditing = true;
+        StateHasChanged();
+    }
+
+    public async Task Save()
+    {
+        Console.WriteLine(aName);
+
+        // Add your patch operations
+        AddPatchOperation(aName);
+
+        using (var client = new HttpClient())
+        {
+            var jsonContent = JsonSerializer.Serialize(jsonPatchDocument.Operations);
+            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var response = await client.PatchAsync(new Uri($"https://localhost:7195/Albums/{album.ID}"), content);
+
+            // Read and print the response
+            string resp = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("PACHED DOC:");
+            Console.WriteLine(resp);
+        }
+
+        enableEditing = false;
+        StateHasChanged();
+    }
+
+
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; }
 }
