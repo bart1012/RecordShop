@@ -6,7 +6,7 @@ namespace RecordShop.Repositories
     public interface IAlbumRepository
     {
         public List<AlbumDTO> GetAllAlbums();
-        public Album GetAlbumByID(int id);
+        public AlbumDTO GetAlbumByID(int id);
         public Album UpdateAlbumDetails(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
         Album InsertAlbum(Album album);
@@ -31,13 +31,30 @@ namespace RecordShop.Repositories
             }
         }
 
-        public Album? GetAlbumByID(int id)
+        public AlbumDTO? GetAlbumByID(int id)
         {
             try
             {
-                var albumByID = _db.Albums.Single(a => a.ID == id);
-                return albumByID;
+                var albumRecord = _db.Albums.Single(a => a.ID == id);
+                return new AlbumDTO()
+                {
 
+                    ID = albumRecord.ID,
+                    Name = albumRecord.Name,
+                    ReleaseYear = albumRecord.ReleaseYear,
+                    TotalMinutes = albumRecord.TotalMinutes,
+                    Artists = _db.AlbumArtists
+                    .Where(aa => aa.AlbumID == albumRecord.ID)
+                    .Select(r => r.Artist.Name)
+                    .ToList(),
+                    Genres = _db.AlbumGenres
+                    .Where(g => g.AlbumID == albumRecord.ID)
+                    .Select(r => r.Genre.Name)
+                    .ToList(),
+                    Songs = _db.AlbumSongs.Where(g => g.AlbumID == albumRecord.ID)
+                    .Select(r => r.Song)
+                    .ToList()
+                };
             }
             catch (InvalidOperationException e)
             {
@@ -47,27 +64,24 @@ namespace RecordShop.Repositories
 
         public List<AlbumDTO> GetAllAlbums()
         {
-            var albumDTOs = _db.Albums
-            .Select(album => new AlbumDTO
+            var dbAlbums = _db.Albums
+            .Select(album => new AlbumDTO()
             {
                 ID = album.ID,
                 Name = album.Name,
-                ReleaseDate = album.ReleaseDate,
+                ReleaseYear = album.ReleaseYear,
                 TotalMinutes = album.TotalMinutes,
-                Artists = _db.Artists
-                    .Where(artist => artist.ID == album.ArtistID)
-                    .Select(a => a.Name)
+                Artists = _db.AlbumArtists
+                    .Where(aa => aa.AlbumID == album.ID)
+                    .Select(r => r.Artist.Name)
                     .ToList(),
                 Genres = _db.AlbumGenres
-                    .Where(ag => ag.AlbumID == album.ID)
-                    .Select(ag => ag.Genre.Name)
+                    .Where(g => g.AlbumID == album.ID)
+                    .Select(r => r.Genre.Name)
                     .ToList(),
-                Songs = _db.AlbumSongs
-                .Where(albumSong => albumSong.AlbumID == album.ID)
-                .Select(aSRecord => aSRecord.Song).ToList()
             }).ToList();
 
-            return albumDTOs;
+            return dbAlbums;
         }
 
         public Album InsertAlbum(Album album)

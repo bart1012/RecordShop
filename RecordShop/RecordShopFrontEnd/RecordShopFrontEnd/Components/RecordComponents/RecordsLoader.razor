@@ -6,7 +6,7 @@
 }
 else if (!isLoading && dbData is null)
 {
-    <div>Oops! There was an issue fetching your data. Please try again.</div>
+    <div>There was an issue fetching your data. Please try again.</div>
 }
 else
 {
@@ -40,13 +40,11 @@ else
         }
         catch (Exception e)
         {
-            // Catch http call exceptions
             dbData = null;
             dbError = true;
         }
         finally
         {
-            // Update the loading state and re-render the component
             isLoading = false;
             StateHasChanged(); 
         }

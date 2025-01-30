@@ -1,0 +1,9 @@
+﻿@page "/records/{RecordID:int}"
+
+<RecordDetails AlbumID="@RecordID"></RecordDetails>
+
+@code {
+    [Parameter]
+
+    public int RecordID { get; set; }
+}

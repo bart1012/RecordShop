@@ -8,7 +8,7 @@ namespace RecordShop.Services
     public interface IAlbumService
     {
         public List<AlbumDTO> RetrieveAllAlbums();
-        public Album RetrieveAlbumByID(int id);
+        public AlbumDTO RetrieveAlbumByID(int id);
         public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
         public Album AddNewAlbum(Album album);
@@ -27,7 +27,7 @@ namespace RecordShop.Services
             return _albumRepo.DeleteAlbum(id);
         }
 
-        public Album? RetrieveAlbumByID(int id)
+        public AlbumDTO? RetrieveAlbumByID(int id)
         {
             return _albumRepo.GetAlbumByID(id);
         }

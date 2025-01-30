@@ -24,7 +24,7 @@ namespace RecordShop.Controllers
         [HttpGet("{id}")]
         public IActionResult GetAlbumById(int id)
         {
-            Album dbAlbumData = _service.RetrieveAlbumByID(id);
+            AlbumDTO dbAlbumData = _service.RetrieveAlbumByID(id);
             if (dbAlbumData is null) return NoContent();
             else return Ok(dbAlbumData);
         }

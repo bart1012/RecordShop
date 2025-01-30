@@ -1,5 +1,7 @@
-﻿
-<div class="card">
+﻿@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<div @onclick="RedirectToRecordDetails" class="card">
     <div class="card-image">
         <figure class="image">
             <img src="https://bulma.io/assets/images/placeholders/1280x960.png"
@@ -16,10 +18,16 @@
             </div>
         </div>
 
-    </div>
+    </div>  
 </div>
 
 @code {
     [Parameter]
     public AlbumDTO album { get; set; }
+
+
+    void RedirectToRecordDetails()
+    {
+        NavigationManager.NavigateTo($"/records/{album.ID}");
+    }
 }
