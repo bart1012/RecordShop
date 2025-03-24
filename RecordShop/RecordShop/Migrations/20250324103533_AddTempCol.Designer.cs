@@ -8,11 +8,11 @@ using RecordShop;
 
 #nullable disable
 
-namespace RecordShop.Migrations
+namespace RecordShop.Backend.Migrations
 {
     [DbContext(typeof(RecordShopDbContext))]
-    [Migration("20250127173448_InitalDB")]
-    partial class InitalDB
+    [Migration("20250324103533_AddTempCol")]
+    partial class AddTempCol
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace RecordShop.Migrations
                     b.ToTable("Albums");
                 });
 
-            modelBuilder.Entity("RecordShop.Models.AlbumArtist", b =>
+            modelBuilder.Entity("RecordShop.Models.AlbumArtists", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,6 +149,10 @@ namespace RecordShop.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TempCol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID");
 
                     b.ToTable("Genres");
@@ -174,16 +178,16 @@ namespace RecordShop.Migrations
                     b.ToTable("Songs");
                 });
 
-            modelBuilder.Entity("RecordShop.Models.AlbumArtist", b =>
+            modelBuilder.Entity("RecordShop.Models.AlbumArtists", b =>
                 {
                     b.HasOne("RecordShop.Models.Album", "Album")
-                        .WithMany()
+                        .WithMany("AlbumArtists")
                         .HasForeignKey("AlbumID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RecordShop.Models.Artist", "Artist")
-                        .WithMany()
+                        .WithMany("AlbumArtists")
                         .HasForeignKey("ArtistID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -196,13 +200,13 @@ namespace RecordShop.Migrations
             modelBuilder.Entity("RecordShop.Models.AlbumGenre", b =>
                 {
                     b.HasOne("RecordShop.Models.Album", "Album")
-                        .WithMany()
+                        .WithMany("AlbumGenres")
                         .HasForeignKey("AlbumID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RecordShop.Models.Genre", "Genre")
-                        .WithMany()
+                        .WithMany("AlbumGenres")
                         .HasForeignKey("GenreID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -215,7 +219,7 @@ namespace RecordShop.Migrations
             modelBuilder.Entity("RecordShop.Models.AlbumSong", b =>
                 {
                     b.HasOne("RecordShop.Models.Album", "Album")
-                        .WithMany()
+                        .WithMany("AlbumSongs")
                         .HasForeignKey("AlbumID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -229,6 +233,25 @@ namespace RecordShop.Migrations
                     b.Navigation("Album");
 
                     b.Navigation("Song");
+                });
+
+            modelBuilder.Entity("RecordShop.Models.Album", b =>
+                {
+                    b.Navigation("AlbumArtists");
+
+                    b.Navigation("AlbumGenres");
+
+                    b.Navigation("AlbumSongs");
+                });
+
+            modelBuilder.Entity("RecordShop.Models.Artist", b =>
+                {
+                    b.Navigation("AlbumArtists");
+                });
+
+            modelBuilder.Entity("RecordShop.Models.Genre", b =>
+                {
+                    b.Navigation("AlbumGenres");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,21 +1,34 @@
-﻿using RecordShop.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using RecordShop.Models;
 using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 
 namespace RecordShop.Repositories
 {
     public interface IAlbumRepository
     {
-        public List<AlbumDTO> GetAllAlbums();
-        public AlbumDTO GetAlbumByID(int id);
+        public List<Album> RetrieveAllAlbums();
+        public Album FindAlbumByID(int id);
         public Album UpdateAlbumDetails(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
-        Album InsertAlbum(Album album);
+        public Album AddAlbum(AlbumDTO album);
     }
 
     public class AlbumRepository(RecordShopDbContext db) : IAlbumRepository
     {
         private readonly RecordShopDbContext _db = db;
 
+        public List<Album> RetrieveAllAlbums()
+        {
+
+            return _db.Albums
+             .Include(a => a.AlbumArtists)
+                 .ThenInclude(aa => aa.Artist)
+             .Include(a => a.AlbumSongs)
+                 .ThenInclude(asg => asg.Song)
+             .Include(a => a.AlbumGenres)
+                 .ThenInclude(ag => ag.Genre)
+             .ToList();
+        }
         public bool DeleteAlbum(int id)
         {
             try
@@ -31,72 +44,70 @@ namespace RecordShop.Repositories
             }
         }
 
-        public AlbumDTO? GetAlbumByID(int id)
+        public Album? FindAlbumByID(int id)
         {
+            return _db.Albums.Include(a => a.AlbumArtists)
+                 .ThenInclude(aa => aa.Artist)
+             .Include(a => a.AlbumSongs)
+                 .ThenInclude(asg => asg.Song)
+             .Include(a => a.AlbumGenres)
+                 .ThenInclude(ag => ag.Genre)
+             .FirstOrDefault(a => a.ID == id);
+        }
+
+        public Album AddAlbum(AlbumDTO album)
+        {
+            if (_db.Albums.Any(a => a.Name == album.Name && a.ReleaseYear == album.ReleaseYear)) throw new InvalidOperationException("An album with the given name and release date already exists.");
+
+            using var transaction = _db.Database.BeginTransaction();
+
             try
             {
-                var albumRecord = _db.Albums.Single(a => a.ID == id);
-                return new AlbumDTO()
+                //create album
+                var albumEntity = new Album()
                 {
-
-                    ID = albumRecord.ID,
-                    Name = albumRecord.Name,
-                    ReleaseYear = albumRecord.ReleaseYear,
-                    TotalMinutes = albumRecord.TotalMinutes,
-                    Artists = _db.AlbumArtists
-                    .Where(aa => aa.AlbumID == albumRecord.ID)
-                    .Select(r => r.Artist.Name)
-                    .ToList(),
-                    Genres = _db.AlbumGenres
-                    .Where(g => g.AlbumID == albumRecord.ID)
-                    .Select(r => r.Genre.Name)
-                    .ToList(),
-                    Songs = _db.AlbumSongs.Where(g => g.AlbumID == albumRecord.ID)
-                    .Select(r => r.Song)
-                    .ToList()
+                    Name = album.Name,
+                    ReleaseYear = album.ReleaseYear,
+                    TotalMinutes = album.TotalMinutes,
+                    ImgURL = album.ImgURL
                 };
-            }
-            catch (InvalidOperationException e)
-            {
-                return null;
-            }
-        }
-
-        public List<AlbumDTO> GetAllAlbums()
-        {
-            var dbAlbums = _db.Albums
-            .Select(album => new AlbumDTO()
-            {
-                ID = album.ID,
-                Name = album.Name,
-                ReleaseYear = album.ReleaseYear,
-                TotalMinutes = album.TotalMinutes,
-                Artists = _db.AlbumArtists
-                    .Where(aa => aa.AlbumID == album.ID)
-                    .Select(r => r.Artist.Name)
-                    .ToList(),
-                Genres = _db.AlbumGenres
-                    .Where(g => g.AlbumID == album.ID)
-                    .Select(r => r.Genre.Name)
-                    .ToList(),
-            }).ToList();
-
-            return dbAlbums;
-        }
-
-        public Album InsertAlbum(Album album)
-        {
-            try
-            {
-                _db.Albums.Add(album);
+                _db.Albums.Add(albumEntity);
                 _db.SaveChanges();
-                return album;
 
+                //add to artist and albumArtists table 
+                foreach (var artistName in album.Artists)
+                {
+                    var artist = _db.Artists.FirstOrDefault(a => a.Name == artistName) ?? new Artist() { Name = artistName };
+                    if (artist.ID == 0) { _db.Artists.Add(artist); _db.SaveChanges(); }
+                    _db.AlbumArtists.Add(new AlbumArtists() { AlbumID = albumEntity.ID, ArtistID = artist.ID });
+                }
+
+                //add to genre and albumGenres table 
+                foreach (var genreName in album.Genres)
+                {
+                    var genre = _db.Genres.FirstOrDefault(g => g.Name == genreName) ?? new Genre()
+                    {
+                        Name = genreName
+                    };
+                    if (genre.ID == 0) { _db.Genres.Add(genre); _db.SaveChanges(); }
+                    _db.AlbumGenres.Add(new AlbumGenre() { AlbumID = albumEntity.ID, GenreID = genre.ID });
+                }
+
+                foreach (var song in album.Songs)
+                {
+                    var songEntity = _db.Songs.FirstOrDefault(s => s.Name == song.Name && s.Duration == song.Duration) ?? song;
+                    if (songEntity.ID == 0) { _db.Songs.Add(songEntity); _db.SaveChanges(); }
+                    _db.AlbumSongs.Add(new AlbumSong() { AlbumID = albumEntity.ID, SongID = songEntity.ID });
+                }
+
+                return albumEntity;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return null;
+                transaction.Rollback();
+                throw;
             }
+
         }
 
         public Album? UpdateAlbumDetails(int id, JsonPatchDocument jsonPatch)

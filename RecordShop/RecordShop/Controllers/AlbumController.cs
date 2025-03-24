@@ -16,41 +16,49 @@ namespace RecordShop.Controllers
         [HttpGet]
         public IActionResult GetAllAlbums()
         {
-            List<AlbumDTO> dbAlbumData = _service.RetrieveAllAlbums();
-            if (dbAlbumData.IsNullOrEmpty()) return NoContent();
-            else return Ok(dbAlbumData);
+
+            var albums = _service.RetrieveAllAlbums();
+            return albums.IsNullOrEmpty() ? NoContent() : Ok(albums);
+
         }
 
         [HttpGet("{id}")]
         public IActionResult GetAlbumById(int id)
         {
-            AlbumDTO dbAlbumData = _service.RetrieveAlbumByID(id);
-            if (dbAlbumData is null) return NoContent();
-            else return Ok(dbAlbumData);
+            var album = _service.RetrieveAlbumByID(id);
+            return album is null ? NotFound() : Ok(album);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteAlbumById(int id)
         {
             bool deleteResult = _service.DeleteAlbum(id);
-            if (deleteResult) return Ok();
-            else return BadRequest("Album not found");
+            return deleteResult ? NoContent() : NotFound();
         }
 
         [HttpPatch("{id}")]
         public IActionResult PatchAlbumById(int id, JsonPatchDocument jsonPatch)
         {
             Album patchResult = _service.UpdateAlbum(id, jsonPatch);
-            if (patchResult != null) return Ok(patchResult);
-            else return BadRequest();
+            return patchResult is null ? NotFound() : Ok(patchResult);
+            //if failed, notFound, badRequest, Conflict
         }
 
         [HttpPost]
-        public IActionResult PostAlbum(Album album)
+        public IActionResult PostAlbum(AlbumDTO album)
         {
-            Album postResult = _service.AddNewAlbum(album);
-            if (postResult != null) return Ok(postResult);
-            else return BadRequest();
+            try
+            {
+                var albumData = _service.AddNewAlbum(album);
+                string uri = $"https://localhost:7195/Albums/{albumData.ID}";
+                return Created(uri, album);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
         }
 
     }

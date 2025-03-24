@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecordShop;
 
@@ -10,9 +11,11 @@ using RecordShop;
 namespace RecordShop.Backend.Migrations
 {
     [DbContext(typeof(RecordShopDbContext))]
-    partial class RecordShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250323203814_AddNewNavProperties")]
+    partial class AddNewNavProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +202,7 @@ namespace RecordShop.Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("RecordShop.Models.Genre", "Genre")
-                        .WithMany("AlbumGenres")
+                        .WithMany()
                         .HasForeignKey("GenreID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -240,11 +243,6 @@ namespace RecordShop.Backend.Migrations
             modelBuilder.Entity("RecordShop.Models.Artist", b =>
                 {
                     b.Navigation("AlbumArtists");
-                });
-
-            modelBuilder.Entity("RecordShop.Models.Genre", b =>
-                {
-                    b.Navigation("AlbumGenres");
                 });
 #pragma warning restore 612, 618
         }

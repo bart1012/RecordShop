@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace RecordShop.Migrations
+namespace RecordShop.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalDB : Migration
+    public partial class AddNewNavProperties : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

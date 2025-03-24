@@ -2,7 +2,7 @@
 
 namespace RecordShop.Models
 {
-    public class AlbumArtist
+    public class AlbumArtists
     {
         [Key]
         public int Id { get; set; }

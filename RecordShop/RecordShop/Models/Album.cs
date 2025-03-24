@@ -8,5 +8,9 @@
         public double TotalMinutes { get; set; }
         public string ImgURL { get; set; }
 
+
+        public List<AlbumArtists> AlbumArtists { get; set; } = new();
+        public List<AlbumSong> AlbumSongs { get; set; } = new();
+        public List<AlbumGenre> AlbumGenres { get; set; } = new();
     }
 }

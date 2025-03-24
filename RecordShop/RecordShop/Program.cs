@@ -28,7 +28,7 @@ namespace RecordShop
                 }
                 else if (builder.Environment.IsProduction())
                 {
-                    options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopDB;User Id=bart1012;Password=Scamper123!;TrustServerCertificate = True");
+                    options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
 
                 }
             });
