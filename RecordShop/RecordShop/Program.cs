@@ -14,7 +14,10 @@ namespace RecordShop
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddCors(options => options.AddPolicy("AllowReactApp", policy =>
+            {
+                policy.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
+            }));
             builder.Services.AddControllers().AddNewtonsoftJson(); ;
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -37,6 +40,7 @@ namespace RecordShop
             builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
 
 
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -46,7 +50,7 @@ namespace RecordShop
 
 
             // Configure the HTTP request pipeline.
-
+            app.UseCors("AllowReactApp");
             app.UseSwagger();
             app.UseSwaggerUI();
 
