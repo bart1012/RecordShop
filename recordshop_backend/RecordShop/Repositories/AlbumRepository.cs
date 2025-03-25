@@ -99,7 +99,7 @@ namespace RecordShop.Repositories
                     if (songEntity.ID == 0) { _db.Songs.Add(songEntity); _db.SaveChanges(); }
                     _db.AlbumSongs.Add(new AlbumSong() { AlbumID = albumEntity.ID, SongID = songEntity.ID });
                 }
-
+                transaction.Commit();
                 return albumEntity;
             }
             catch (Exception ex)

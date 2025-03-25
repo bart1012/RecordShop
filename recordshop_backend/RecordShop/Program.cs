@@ -27,16 +27,7 @@ namespace RecordShop
 
                 options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
 
-                //if (builder.Environment.IsDevelopment())
-                //{v
 
-                //    options.UseInMemoryDatabase("InMemoryDB");
-                //}
-                //else if (builder.Environment.IsProduction())
-                //{
-                //    options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
-
-                //}
             });
             builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
             builder.Services.AddScoped<IAlbumService, AlbumService>();
@@ -46,10 +37,7 @@ namespace RecordShop
 
             var app = builder.Build();
 
-            //if (app.Environment.IsDevelopment())
-            //{
-            //    Seeder.AddAlbumData(app);
-            //}
+
 
 
             // Configure the HTTP request pipeline.

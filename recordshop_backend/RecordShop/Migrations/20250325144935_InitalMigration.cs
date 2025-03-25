@@ -5,7 +5,7 @@
 namespace RecordShop.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNewNavProperties : Migration
+    public partial class InitalMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -11,8 +11,8 @@ using RecordShop;
 namespace RecordShop.Backend.Migrations
 {
     [DbContext(typeof(RecordShopDbContext))]
-    [Migration("20250324103533_AddTempCol")]
-    partial class AddTempCol
+    [Migration("20250325144935_InitalMigration")]
+    partial class InitalMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,10 +146,6 @@ namespace RecordShop.Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TempCol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
