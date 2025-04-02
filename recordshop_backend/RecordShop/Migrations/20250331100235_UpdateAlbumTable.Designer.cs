@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecordShop;
 
@@ -11,9 +12,11 @@ using RecordShop;
 namespace RecordShop.Backend.Migrations
 {
     [DbContext(typeof(RecordShopDbContext))]
-    partial class RecordShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250331100235_UpdateAlbumTable")]
+    partial class UpdateAlbumTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +40,6 @@ namespace RecordShop.Backend.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PricePence")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReleaseYear")
                         .HasColumnType("datetime2");

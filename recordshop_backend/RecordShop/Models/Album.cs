@@ -4,8 +4,9 @@
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int ReleaseYear { get; set; }
+        public DateTime ReleaseYear { get; set; }
         public double TotalMinutes { get; set; }
+        public int PricePence { get; set; }
         public string ImgURL { get; set; }
 
 

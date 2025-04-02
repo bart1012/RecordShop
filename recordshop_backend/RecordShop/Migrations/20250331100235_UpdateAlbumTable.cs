@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace RecordShop.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalMigration : Migration
+    public partial class UpdateAlbumTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +18,7 @@ namespace RecordShop.Backend.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReleaseYear = table.Column<int>(type: "int", nullable: false),
+                    ReleaseYear = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalMinutes = table.Column<double>(type: "float", nullable: false),
                     ImgURL = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
