@@ -4,10 +4,10 @@ import { UseShoppingCart } from "../context/ShoppingCartContext.jsx"
 
 const ShoppingCart = () => {
 
-    const {value} = UseShoppingCart();
+    const {cart} = UseShoppingCart();
 
     return <>
-        {value.map((item) => <ProductSummary album={item}></ProductSummary>)}
+        {cart.map((item) => <ProductSummary album={item}></ProductSummary>)}
         <br></br>
         <p>Total: </p>
         <button>Place order</button>

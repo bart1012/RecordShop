@@ -1,4 +1,5 @@
-import { useContext, createContext, useState, useMemo } from "react";
+import { useContext, createContext, useState, memo, useMemo, useEffect } from "react";
+
 
 const ShoppingCartContext = createContext();
 
@@ -7,27 +8,54 @@ export function UseShoppingCart() {
 }
 
 export function ShoppingCartProvider({ children }) {
-    const [value, setValue] = useState([]);
 
-    const CartItemQuantity = value.length;
+    const [cart, setCart] = useState(() => {
+        const savedCart = sessionStorage.getItem("cart");
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
+
+    useEffect(() => {
+        sessionStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart]);
+
+    const CartItemQuantity = cart.length;
 
     function IncreaseCartQuantity(album) {
         
-        setValue((cartData) => [...cartData, album]); 
+        setCart((prevCart ) => [...prevCart , album] );   
     }
 
     function DecreaseCartQuantity() {
-        setValue(prev => (prev > 0 ? prev - 1 : 0)); 
+        setCart(prevCart  => (prevCart  > 0 ? prevCart  - 1 : 0)); 
     }
 
  
     return (
         <ShoppingCartContext.Provider 
-        value={{ value, CartItemQuantity, IncreaseCartQuantity, DecreaseCartQuantity }}
+        value={{ cart, CartItemQuantity, IncreaseCartQuantity, DecreaseCartQuantity }}
         >
             {children}
         </ShoppingCartContext.Provider>
     );
 }
+
+// export const ShoppingCartProvider = memo(({ children }) => {
+//     const [cart, setCart] = useState([]);
+
+//     // Memoize the context value
+//     const contextValue = useMemo(() => ({
+//         cart,
+//         CartItemQuantity: cart.length,
+//         IncreaseCartQuantity: (album) => setCart((prev) => [...prev, album]),
+//         DecreaseCartQuantity: () => setCart((prev) => prev.slice(0, -1)),
+//     }), [cart]);
+
+//     return (
+//         <ShoppingCartContext.Provider value={contextValue}>
+//             {children}
+//         </ShoppingCartContext.Provider>
+//     );
+// });
+
 
 
