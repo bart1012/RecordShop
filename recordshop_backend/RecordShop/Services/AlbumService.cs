@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using RecordShop.Models;
 using RecordShop.Repositories;
+using System.Data;
 using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 
 
@@ -13,6 +14,7 @@ namespace RecordShop.Services
         public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
         public Album AddNewAlbum(AlbumDTO album);
+        public List<AlbumDTO>? RetrieveNewReleases();
     }
     public class AlbumService(IAlbumRepository albumRepo) : IAlbumService
     {
@@ -52,6 +54,31 @@ namespace RecordShop.Services
         public List<AlbumDTO>? RetrieveAllAlbums()
         {
             var albumData = _albumRepo.RetrieveAllAlbums();
+            return albumData.IsNullOrEmpty() ? null : albumData.Select(a => new AlbumDTO
+            {
+                ID = a.ID,
+                Name = a.Name,
+                ReleaseYear = a.ReleaseYear,
+                TotalMinutes = a.TotalMinutes,
+                ImgURL = a.ImgURL,
+                Artists = a.AlbumArtists.Select(aa => aa.Artist.Name).ToList(),
+                Genres = a.AlbumGenres.Select(ag => ag.Genre.Name).ToList(),
+                Songs = a.AlbumSongs.Select(asg => new Song
+                {
+                    ID = asg.Song.ID,
+                    Name = asg.Song.Name,
+                    Duration = asg.Song.Duration
+                }).ToList(),
+
+            }).ToList();
+        }
+
+        public List<AlbumDTO>? RetrieveNewReleases()
+        {
+
+            DateTime oldestPossibleDate = DateTime.Now.Subtract(new TimeSpan(30 * 3, 0, 0, 0));
+
+            var albumData = _albumRepo.RetrieveAllAlbums().Where(a => a.ReleaseYear <= DateTime.Now && a.ReleaseYear > oldestPossibleDate).ToList();
             return albumData.IsNullOrEmpty() ? null : albumData.Select(a => new AlbumDTO
             {
                 ID = a.ID,

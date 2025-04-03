@@ -2,35 +2,42 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/AlbumCard";
 import TodaysPicksCarusel from "../components/caruselFeatures";
 import MobileSectionBody from "../components/mobileSectionBody";
-import {FetchAllAlbums} from "../scripts/apiService";
+import {FetchAllAlbums, FetchMostRecent} from "../scripts/apiService";
 
 const Home = () => {
-    const [data, setData] = useState([]); 
-    const [loading, setLoading] = useState(true);
+    const [albums, setAlbums] = useState([]); 
+    const [newReleases, setNewReleases] = useState(null); 
 
-    async function fetchData() {
+    async function fetchAllAlbums() {
         try {
-            const albumData = await FetchAllAlbums();
-            setData(albumData);
+            const response = await FetchAllAlbums();
+            setAlbums(response);
         } catch (error) {
             console.error("Error calling backend API: ", error);
-        } finally {
-            setLoading(false);
+        }
+    }
+
+    async function fetchNewReleases() {
+        try {
+            const response = await FetchMostRecent();
+            setNewReleases(response);
+        } catch (error) {
+            console.error("Error calling backend API: ", error);
         }
     }
 
     useEffect(() => {
-        fetchData();
+        fetchAllAlbums(); fetchNewReleases();
     }, []);
 
 
     return (
         <div className="h-full w-auto grid gap-6">
    
-            <TodaysPicksCarusel album={data[0]} />
-            <MobileSectionBody title={"Popular"} />
-            <MobileSectionBody title={"New Releases"} />
-            <MobileSectionBody title={"Best Sellers"} />
+            <TodaysPicksCarusel album={albums[0]} />
+            <MobileSectionBody title={"Popular"} albums={albums}/>
+            <MobileSectionBody title={"New Releases"} albums={newReleases}/>
+            <MobileSectionBody title={"Best Sellers"} albums={albums}/>
             <MobileSectionBody title={"Featured Artists"} style={"rounded"}/>
         </div>
     );

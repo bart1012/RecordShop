@@ -24,9 +24,20 @@ const FetchAlbumByID = async (id) => {
         const response = await axios.get(URL);
         return response.data;
     }catch(error){
-        console.error("Error fetching album:", error);
+        console.error(`Error fetching album with id: ${id}`, error);
         return [];  
     }
 }
 
-export  {FetchAllAlbums, FetchAlbumByID};
+const FetchMostRecent = async () => {
+    const URL = BASE_URL + 'Albums/New'
+    try{
+        const response = await axios.get(URL);
+        return response.data;
+    }catch(error){
+        console.error("Error fetching new releases:", error);
+        return [];  
+    }
+}
+
+export  {FetchAllAlbums, FetchAlbumByID, FetchMostRecent};

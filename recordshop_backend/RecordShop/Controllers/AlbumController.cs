@@ -22,6 +22,15 @@ namespace RecordShop.Controllers
 
         }
 
+        [HttpGet("New")]
+        public IActionResult GetLatestReleases()
+        {
+
+            var albums = _service.RetrieveNewReleases();
+            return albums.IsNullOrEmpty() ? NoContent() : Ok(albums);
+
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetAlbumById(int id)
         {

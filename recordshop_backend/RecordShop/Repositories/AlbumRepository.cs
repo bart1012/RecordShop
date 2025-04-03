@@ -29,6 +29,8 @@ namespace RecordShop.Repositories
                  .ThenInclude(ag => ag.Genre)
              .ToList();
         }
+
+
         public bool DeleteAlbum(int id)
         {
             try

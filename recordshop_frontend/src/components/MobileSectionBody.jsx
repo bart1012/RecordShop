@@ -1,9 +1,9 @@
 import React from "react";
 import Card from "./AlbumCard";
 
-const MobileSectionBody = ({title, style}) => {
+const MobileSectionBody = ({title, style, albums}) => {
     return (
-    <section className="h-auto w-full flex flex-col max-w-sm overflow-hidden">
+    <section className="h-auto w-full flex flex-col max-w-screen">
 
         <div className="flex flex-wrap justify-between px-4">
             <h2 className="text-xl   font-semibold mb-3">{title}</h2>
@@ -12,8 +12,19 @@ const MobileSectionBody = ({title, style}) => {
 
         <div>
             <ul className="flex flex-row gap-4 overflow-y-auto px-4 pb-4">
-                {
-                    [...Array(6).keys()].map(key => <li key={key}>  <Card style={style}></Card> </li>)}
+            {
+                !albums
+                ? [...Array(6).keys()].map(key => (
+                    <li key={key}>  
+                        <Card style={style} />
+                    </li>   
+                    ))
+                : albums.map(album => (
+                    <li key={album.name}>  
+                        <Card style={style} album={album} />
+                    </li>
+                    ))
+            }   
             </ul>
           
 
