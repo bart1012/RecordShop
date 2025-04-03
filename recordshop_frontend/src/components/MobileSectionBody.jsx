@@ -3,16 +3,23 @@ import Card from "./AlbumCard";
 
 const MobileSectionBody = ({title, style}) => {
     return (
-    <section className="h-40 w-full flex flex-col">
-        <div className="flex flex-wrap justify-between">
-            <h2 className="text-xl   font-semibold mb-5">{title}</h2>
+    <section className="h-auto w-full flex flex-col max-w-sm overflow-hidden">
+
+        <div className="flex flex-wrap justify-between px-4">
+            <h2 className="text-xl   font-semibold mb-3">{title}</h2>
             <p className="text-gray-400 mt-1">View all</p>
         </div>
-        <div className="grid gap-4 grid-cols-3 grid-rows-1 h-full">
-            <Card style={style}></Card>
-            <Card style={style}></Card>
-            <Card style={style}></Card>
+
+        <div>
+            <ul className="flex flex-row gap-4 overflow-y-auto px-4 pb-4">
+                {
+                    [...Array(6).keys()].map(key => <li key={key}>  <Card style={style}></Card> </li>)}
+            </ul>
+          
+
+            {/* change this to an unordered list, fetch api data and map each item into a card  */}
         </div>
+
     </section>
     )
 }

@@ -23,12 +23,9 @@ const Home = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        console.log("API Response Data:", data[0]);
-    }, [data]); 
 
     return (
-        <div className="h-full grid gap-6">
+        <div className="h-full w-auto grid gap-6">
    
             <TodaysPicksCarusel album={data[0]} />
             <MobileSectionBody title={"Popular"} />
