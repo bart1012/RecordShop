@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RecordShop.Backend.DbContexts;
 using RecordShop.Repositories;
 using RecordShop.Services;
 using RecordShop.Utils;
@@ -24,6 +25,13 @@ namespace RecordShop
             {
 
                 options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
+
+
+            });
+            builder.Services.AddDbContext<UserLoginDbContext>(options =>
+            {
+
+                options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopUsersDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
 
 
             });

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RecordShop\RecordShop.csproj" />
+    <ProjectReference Include="..\RecordShop\RecordShop.Backend.csproj" />
   </ItemGroup>
 
   <ItemGroup>

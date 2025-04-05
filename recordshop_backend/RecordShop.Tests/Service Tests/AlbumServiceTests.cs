@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Moq;
-using RecordShop.Classes;
+using RecordShop.Models;
 using RecordShop.Repositories;
 using RecordShop.Services;
 namespace RecordShop.Tests
@@ -14,29 +14,34 @@ namespace RecordShop.Tests
             //Arrange
             Mock<IAlbumRepository> mockAlbumRepository = new Mock<IAlbumRepository>();
             AlbumService albumService = new(mockAlbumRepository.Object);
-            mockAlbumRepository.Setup(repo => repo.GetAllAlbums()).Returns(new List<Album>()
+            mockAlbumRepository.Setup(repo => repo.RetrieveAllAlbums()).Returns(new List<Album>()
             {
-                new Album()
-                {
-                    Name = "Is This It",
-                    ArtistID = 3,
-                    ReleaseDate = 2001,
-                    TotalMinutes = 36.28
-                },
-                new Album()
-                {
-                    Name = "OK Computer",
-                    ArtistID = 2,
-                    ReleaseDate = 1997,
-                    TotalMinutes = 53.25
-                },
-                new Album()
+                 new Album()
                 {
                     Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45
-                }
+                    ReleaseYear = new DateTime(1998,01,13),
+                    TotalMinutes = 39.45,
+                    PricePence = 1200,
+                    ImgURL = "AlbumCover1"
+                },
+
+                 new Album()
+                 {
+                     Name = "Ok Computer",
+                     ReleaseYear = new DateTime(1997, 10, 18),
+                     TotalMinutes = 32.00,
+                     PricePence = 1500,
+                     ImgURL = "AlbumCover2"
+                 },
+
+                   new Album()
+                   {
+                       Name = "Is This It",
+                       ReleaseYear = new DateTime(2002, 10, 18),
+                       TotalMinutes = 35.00,
+                       PricePence = 1000,
+                       ImgURL = "AlbumCover3"
+                   }
 
             });
 
@@ -45,30 +50,45 @@ namespace RecordShop.Tests
             var result = albumService.RetrieveAllAlbums();
 
             //Assert
-            mockAlbumRepository.Verify(repo => repo.GetAllAlbums(), Times.Once);
-            result.Should().BeEquivalentTo(new List<Album>()
+            mockAlbumRepository.Verify(repo => repo.RetrieveAllAlbums(), Times.Once);
+            result.Should().BeEquivalentTo(new List<AlbumDTO>()
             {
-                new Album()
-                {
-                    Name = "Is This It",
-                    ArtistID = 3,
-                    ReleaseDate = 2001,
-                    TotalMinutes = 36.28
-                },
-                new Album()
-                {
-                    Name = "OK Computer",
-                    ArtistID = 2,
-                    ReleaseDate = 1997,
-                    TotalMinutes = 53.25
-                },
-                new Album()
+                 new AlbumDTO()
                 {
                     Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45
-                }
+                    ReleaseYear = new DateTime(1998,01,13),
+                    TotalMinutes = 39.45,
+                    PricePence = 1200,
+                    ImgURL = "AlbumCover1",
+                    Artists = new List<string>(),
+                    Genres = new List<string> (),
+                    Songs = new List<Song>()
+
+                },
+
+                 new AlbumDTO()
+                 {
+                     Name = "Ok Computer",
+                     ReleaseYear = new DateTime(1997, 10, 18),
+                     TotalMinutes = 32.00,
+                     PricePence = 1500,
+                     ImgURL = "AlbumCover2",
+                      Artists = new List<string>(),
+                    Genres = new List<string> (),
+                    Songs = new List<Song>()
+                 },
+
+                   new AlbumDTO()
+                   {
+                       Name = "Is This It",
+                       ReleaseYear = new DateTime(2002, 10, 18),
+                       TotalMinutes = 35.00,
+                       PricePence = 1000,
+                       ImgURL = "AlbumCover3",
+                        Artists = new List<string>(),
+                    Genres = new List<string> (),
+                    Songs = new List<Song>()
+                   }
 
             });
 
@@ -80,15 +100,15 @@ namespace RecordShop.Tests
             //Arrange
             Mock<IAlbumRepository> mockAlbumRepository = new Mock<IAlbumRepository>();
             AlbumService albumService = new(mockAlbumRepository.Object);
-            mockAlbumRepository.Setup(repo => repo.GetAllAlbums()).Returns(new List<Album>());
+            mockAlbumRepository.Setup(repo => repo.RetrieveAllAlbums()).Returns(new List<Album>());
 
             //Act
 
             var result = albumService.RetrieveAllAlbums();
 
             //Assert
-            mockAlbumRepository.Verify(repo => repo.GetAllAlbums(), Times.Once);
-            result.Should().BeEquivalentTo(new List<Album>());
+            mockAlbumRepository.Verify(repo => repo.RetrieveAllAlbums(), Times.Once);
+            result.Should().BeEquivalentTo((List<AlbumDTO>)null);
 
         }
 
@@ -98,15 +118,16 @@ namespace RecordShop.Tests
             //Arrange
             Mock<IAlbumRepository> mockAlbumRepository = new Mock<IAlbumRepository>();
             AlbumService albumService = new(mockAlbumRepository.Object);
-            mockAlbumRepository.Setup(repo => repo.GetAlbumByID(1)).Returns(
+            mockAlbumRepository.Setup(repo => repo.FindAlbumByID(1)).Returns(
 
                 new Album()
                 {
                     ID = 1,
-                    Name = "Is This It",
-                    ArtistID = 3,
-                    ReleaseDate = 2001,
-                    TotalMinutes = 36.28
+                    Name = "In the Aeroplane Over the Sea",
+                    ReleaseYear = new DateTime(1998, 01, 13),
+                    TotalMinutes = 39.45,
+                    PricePence = 1200,
+                    ImgURL = "AlbumCover1"
                 }
 
             );
@@ -115,14 +136,19 @@ namespace RecordShop.Tests
             var result = albumService.RetrieveAlbumByID(1);
 
             //Assert
-            mockAlbumRepository.Verify(repo => repo.GetAlbumByID(1), Times.Once);
-            result.Should().BeEquivalentTo(new Album()
+            mockAlbumRepository.Verify(repo => repo.FindAlbumByID(1), Times.Once);
+            result.Should().BeEquivalentTo(new AlbumDTO()
             {
                 ID = 1,
-                Name = "Is This It",
-                ArtistID = 3,
-                ReleaseDate = 2001,
-                TotalMinutes = 36.28
+                Name = "In the Aeroplane Over the Sea",
+                ReleaseYear = new DateTime(1998, 01, 13),
+                TotalMinutes = 39.45,
+                PricePence = 1200,
+                ImgURL = "AlbumCover1",
+                Artists = new List<string>(),
+                Genres = new List<string>(),
+                Songs = new List<Song>()
+
             });
 
         }
@@ -133,14 +159,14 @@ namespace RecordShop.Tests
             //Arrange
             Mock<IAlbumRepository> mockAlbumRepository = new Mock<IAlbumRepository>();
             AlbumService albumService = new(mockAlbumRepository.Object);
-            mockAlbumRepository.Setup(repo => repo.GetAlbumByID(1)).Returns((Album?)null);
+            mockAlbumRepository.Setup(repo => repo.FindAlbumByID(1)).Returns((Album?)null);
 
             //Act
 
             var result = albumService.RetrieveAlbumByID(1);
 
             //Assert
-            mockAlbumRepository.Verify(repo => repo.GetAlbumByID(1), Times.Once);
+            mockAlbumRepository.Verify(repo => repo.FindAlbumByID(1), Times.Once);
             result.Should().BeNull();
 
         }
@@ -188,14 +214,15 @@ namespace RecordShop.Tests
             Mock<IAlbumRepository> mockAlbumRepository = new Mock<IAlbumRepository>();
             AlbumService albumService = new(mockAlbumRepository.Object);
             JsonPatchDocument jsonPatch = new JsonPatchDocument();
-            jsonPatch.Replace("/ReleaseDate", 2000).Replace("/ArtistID", 2);
+            jsonPatch.Replace("/Name", "Ok Computer 10th Anniversary Edition");
             mockAlbumRepository.Setup(repo => repo.UpdateAlbumDetails(1, jsonPatch)).Returns(new Album()
             {
                 ID = 1,
-                Name = "In the Aeroplane Over the Sea",
-                ArtistID = 2,
-                ReleaseDate = 2000,
-                TotalMinutes = 40.00,
+                Name = "Ok Computer 10th Anniversary Edition",
+                ReleaseYear = new DateTime(1997, 10, 18),
+                TotalMinutes = 32.00,
+                PricePence = 1500,
+                ImgURL = "AlbumCover2"
             });
 
             //Act
@@ -207,10 +234,11 @@ namespace RecordShop.Tests
             result.Should().BeEquivalentTo(new Album()
             {
                 ID = 1,
-                Name = "In the Aeroplane Over the Sea",
-                ArtistID = 2,
-                ReleaseDate = 2000,
-                TotalMinutes = 40.00,
+                Name = "Ok Computer 10th Anniversary Edition",
+                ReleaseYear = new DateTime(1997, 10, 18),
+                TotalMinutes = 32.00,
+                PricePence = 1500,
+                ImgURL = "AlbumCover2"
             });
 
         }

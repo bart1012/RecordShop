@@ -3,9 +3,10 @@ using RecordShop.Models;
 
 
 
-namespace RecordShop
+
+namespace RecordShop.Backend.DbContexts
 {
-    public class RecordShopDbContext(DbContextOptions<RecordShopDbContext> options) : DbContext(options)
+    public class RecordShopDbContext(DbContextOptions<RecordShopDbContext> options) : Microsoft.EntityFrameworkCore.DbContext(options)
     {
         public DbSet<Album> Albums { get; set; }
         public DbSet<Song> Songs { get; set; }

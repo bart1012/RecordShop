@@ -1,7 +1,8 @@
 global using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using RecordShop.Classes;
+using RecordShop.Backend.DbContexts;
+using RecordShop.Models;
 using RecordShop.Repositories;
 
 namespace RecordShop.Tests
@@ -23,64 +24,70 @@ namespace RecordShop.Tests
                 new Album()
                 {
                     Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
+                    ReleaseYear = new DateTime(1998, 01, 13),
                     TotalMinutes = 39.45,
+                    PricePence = 1200,
+                    ImgURL = "AlbumCover1"
                 },
 
-                new Album()
-                {
-                    Name = "OK Computer",
-                    ArtistID = 2,
-                    ReleaseDate = 1997,
-                    TotalMinutes = 53.25,
-                },
+                 new Album()
+                 {
+                     Name = "Ok Computer",
+                     ReleaseYear = new DateTime(1997, 10, 18),
+                     TotalMinutes = 32.00,
+                     PricePence = 1500,
+                     ImgURL = "AlbumCover2"
+                 },
 
-                new Album
-                {
-                    Name = "Is This It",
-                    ArtistID = 3,
-                    ReleaseDate = 2001,
-                    TotalMinutes = 36.28,
-                }
+                   new Album()
+                   {
+                       Name = "Is This It",
+                       ReleaseYear = new DateTime(2002, 10, 18),
+                       TotalMinutes = 35.00,
+                       PricePence = 1000,
+                       ImgURL = "AlbumCover3"
+                   }
 
                 );
             db.SaveChanges();
             AlbumRepository albumRepository = new AlbumRepository(db);
 
             //Act
-            var result = albumRepository.GetAllAlbums();
+            var result = albumRepository.RetrieveAllAlbums();
             db.Database.EnsureDeleted();
 
             //Assert
             result.Should().BeEquivalentTo(new List<Album>()
             {
-                 new Album()
+                  new Album()
                 {
                     ID = 1,
                     Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
+                    ReleaseYear = new DateTime(1998,01,13),
                     TotalMinutes = 39.45,
+                    PricePence = 1200,
+                    ImgURL = "AlbumCover1"
                 },
 
-                new Album()
-                {
-                    ID = 2,
-                    Name = "OK Computer",
-                    ArtistID = 2,
-                    ReleaseDate = 1997,
-                    TotalMinutes = 53.25,
-                },
+                 new Album()
+                 {
+                     ID = 2,
+                     Name = "Ok Computer",
+                     ReleaseYear = new DateTime(1997, 10, 18),
+                     TotalMinutes = 32.00,
+                     PricePence = 1500,
+                     ImgURL = "AlbumCover2"
+                 },
 
-                new Album
-                {
-                    ID = 3,
-                    Name = "Is This It",
-                    ArtistID = 3,
-                    ReleaseDate = 2001,
-                    TotalMinutes = 36.28,
-                }
+                   new Album()
+                   {
+                        ID = 3,
+                       Name = "Is This It",
+                       ReleaseYear = new DateTime(2002, 10, 18),
+                       TotalMinutes = 35.00,
+                       PricePence = 1000,
+                       ImgURL = "AlbumCover3"
+                   }
             });
 
 
@@ -97,7 +104,7 @@ namespace RecordShop.Tests
             AlbumRepository albumRepository = new AlbumRepository(db);
 
             //Act
-            var result = albumRepository.GetAllAlbums();
+            var result = albumRepository.RetrieveAllAlbums();
 
             //Assert
             result.Should().BeNullOrEmpty();
@@ -116,10 +123,11 @@ namespace RecordShop.Tests
                 new Album()
                 {
                     ID = 1,
-                    Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45,
+                    Name = "Is This It",
+                    ReleaseYear = new DateTime(2002, 10, 18),
+                    TotalMinutes = 35.00,
+                    PricePence = 1000,
+                    ImgURL = "AlbumCover3"
                 });
 
             db.SaveChanges();
@@ -127,16 +135,17 @@ namespace RecordShop.Tests
             AlbumRepository albumRepository = new AlbumRepository(db);
 
             //Act
-            var result = albumRepository.GetAlbumByID(1);
+            var result = albumRepository.FindAlbumByID(1);
 
             //Assert
             result.Should().BeEquivalentTo(new Album()
             {
                 ID = 1,
-                Name = "In the Aeroplane Over the Sea",
-                ArtistID = 1,
-                ReleaseDate = 1998,
-                TotalMinutes = 39.45,
+                Name = "Is This It",
+                ReleaseYear = new DateTime(2002, 10, 18),
+                TotalMinutes = 35.00,
+                PricePence = 1000,
+                ImgURL = "AlbumCover3"
             });
 
 
@@ -155,7 +164,7 @@ namespace RecordShop.Tests
             AlbumRepository albumRepository = new AlbumRepository(db);
 
             //Act
-            var result = albumRepository.GetAlbumByID(1);
+            var result = albumRepository.FindAlbumByID(1);
 
             //Assert
             result.Should().BeNull();
@@ -173,14 +182,15 @@ namespace RecordShop.Tests
             db.Database.EnsureDeleted();
             db.Albums.Add(
 
-                new Album()
-                {
-                    ID = 1,
-                    Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45,
-                });
+               new Album()
+               {
+                   ID = 1,
+                   Name = "Is This It",
+                   ReleaseYear = new DateTime(2002, 10, 18),
+                   TotalMinutes = 35.00,
+                   PricePence = 1000,
+                   ImgURL = "AlbumCover3"
+               });
 
             db.SaveChanges();
 
@@ -209,10 +219,11 @@ namespace RecordShop.Tests
                 new Album()
                 {
                     ID = 1,
-                    Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45,
+                    Name = "Is This It",
+                    ReleaseYear = new DateTime(2002, 10, 18),
+                    TotalMinutes = 35.00,
+                    PricePence = 1000,
+                    ImgURL = "AlbumCover3"
                 });
 
             db.SaveChanges();
@@ -244,10 +255,11 @@ namespace RecordShop.Tests
                 new Album()
                 {
                     ID = 1,
-                    Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45,
+                    Name = "Is This It",
+                    ReleaseYear = new DateTime(2002, 10, 18),
+                    TotalMinutes = 35.00,
+                    PricePence = 1000,
+                    ImgURL = "AlbumCover3"
                 });
             db.SaveChanges();
 
@@ -261,10 +273,11 @@ namespace RecordShop.Tests
             result.Should().BeEquivalentTo(new Album()
             {
                 ID = 1,
-                Name = "In the Aeroplane Over the Sea",
-                ArtistID = 1,
-                ReleaseDate = 1998,
+                Name = "Is This It",
+                ReleaseYear = new DateTime(2002, 10, 18),
                 TotalMinutes = 40.00,
+                PricePence = 1000,
+                ImgURL = "AlbumCover3"
             });
 
 
@@ -285,10 +298,11 @@ namespace RecordShop.Tests
                 new Album()
                 {
                     ID = 1,
-                    Name = "In the Aeroplane Over the Sea",
-                    ArtistID = 1,
-                    ReleaseDate = 1998,
-                    TotalMinutes = 39.45,
+                    Name = "Is This It",
+                    ReleaseYear = new DateTime(2002, 10, 18),
+                    TotalMinutes = 35.00,
+                    PricePence = 1000,
+                    ImgURL = "AlbumCover3"
                 });
             db.SaveChanges();
 
@@ -305,35 +319,65 @@ namespace RecordShop.Tests
         }
 
         [Test]
-        public void InsertALbum_ReturnsNewAlbum()
+        public void InsertAlbum_ReturnsNewAlbum()
         {
 
             //Arrange
             DbContextOptionsBuilder<RecordShopDbContext> dbOptionsBuilder = new DbContextOptionsBuilder<RecordShopDbContext>().UseInMemoryDatabase("InMemoryDb");
             RecordShopDbContext db = new RecordShopDbContext(dbOptionsBuilder.Options);
             db.Database.EnsureDeleted();
-            Album album = new Album()
+            AlbumDTO album = new AlbumDTO
             {
-                Name = "In the Aeroplane Over the Sea",
-                ArtistID = 1,
-                ReleaseDate = 1998,
-                TotalMinutes = 39.45,
+                Name = "Rushmere",
+                ReleaseYear = DateTime.Parse("2025-03-28T12:04:16.514Z"),
+                TotalMinutes = 34.18,
+                ImgURL = "https://i.scdn.co/image/ab67616d0000b2731c75d1c5b466b7cb26a182cb",
+                Artists = new List<string> { "Mumford & Sons" },
+                Genres = new List<string> { "Folk", "Alternative", "Indie" },
+                Songs = new List<Song>
+                    {
+                        new Song { Name = "Malibu", Duration = 4.02 },
+                        new Song { Name = "Caroline", Duration = 3.20 },
+                        new Song { Name = "Rushmere", Duration = 3.12 },
+                        new Song { Name = "Monochrome", Duration = 3.04 },
+                        new Song { Name = "Truth", Duration = 3.43 },
+                        new Song { Name = "Where It Belongs", Duration = 4.07 },
+                        new Song { Name = "Anchor", Duration = 2.51 },
+                        new Song { Name = "Surrender", Duration = 3.10 },
+                        new Song { Name = "Blood on the Page", Duration = 3.06 },
+                        new Song { Name = "Carry On", Duration = 3.43 }
+                    }
             };
+
 
             AlbumRepository albumRepository = new AlbumRepository(db);
 
             //Act
-            var result = albumRepository.InsertAlbum(album);
+            var result = albumRepository.AddAlbum(album);
 
             //Assert
             db.Albums.Count().Should().Be(1);
-            result.Should().BeEquivalentTo(new Album()
+            result.Should().BeEquivalentTo(new AlbumDTO
             {
-                ID = 1,
-                Name = "In the Aeroplane Over the Sea",
-                ArtistID = 1,
-                ReleaseDate = 1998,
-                TotalMinutes = 39.45,
+                Name = "Rushmere",
+                ReleaseYear = DateTime.Parse("2025-03-28T12:04:16.514Z"),
+                TotalMinutes = 34.18,
+                ImgURL = "https://i.scdn.co/image/ab67616d0000b2731c75d1c5b466b7cb26a182cb",
+                Artists = new List<string> { "Mumford & Sons" },
+                Genres = new List<string> { "Folk", "Alternative", "Indie" },
+                Songs = new List<Song>
+                    {
+                        new Song { Name = "Malibu", Duration = 4.02 },
+                        new Song { Name = "Caroline", Duration = 3.20 },
+                        new Song { Name = "Rushmere", Duration = 3.12 },
+                        new Song { Name = "Monochrome", Duration = 3.04 },
+                        new Song { Name = "Truth", Duration = 3.43 },
+                        new Song { Name = "Where It Belongs", Duration = 4.07 },
+                        new Song { Name = "Anchor", Duration = 2.51 },
+                        new Song { Name = "Surrender", Duration = 3.10 },
+                        new Song { Name = "Blood on the Page", Duration = 3.06 },
+                        new Song { Name = "Carry On", Duration = 3.43 }
+                    }
             });
 
 
