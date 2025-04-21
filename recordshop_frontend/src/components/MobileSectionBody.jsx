@@ -3,7 +3,7 @@ import Card from "./AlbumCard";
 
 const MobileSectionBody = ({title, style, albums}) => {
     return (
-    <section className="h-auto w-full flex flex-col max-w-screen">
+    <section className="h-auto w-full flex flex-col max-w-screen md:mx-20">
 
         <div className="flex flex-wrap justify-between px-4">
             <h2 className="text-xl   font-semibold mb-3">{title}</h2>

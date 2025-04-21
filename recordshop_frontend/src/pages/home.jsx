@@ -34,7 +34,7 @@ const Home = () => {
     return (
         <div className="h-full w-auto grid gap-6">
    
-            <TodaysPicksCarusel album={albums[0]} />
+            <TodaysPicksCarusel imgURL={"../public/images/HomePageBanner1.webp"} />
             <MobileSectionBody title={"Popular"} albums={albums}/>
             <MobileSectionBody title={"New Releases"} albums={newReleases}/>
             <MobileSectionBody title={"Best Sellers"} albums={albums}/>

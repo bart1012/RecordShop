@@ -6,7 +6,7 @@ namespace RecordShop.Backend.Repositories
 {
     public interface IUserRepository
     {
-        List<User> RetrieveAllUsers();
+        List<User> RetrieveAllUserData();
         User? FindUser(string email);
         User UpdateUserDetails();
         bool DeleteUser();
@@ -42,7 +42,7 @@ namespace RecordShop.Backend.Repositories
             return _db.Users.FirstOrDefault(u => u.Email == email);
         }
 
-        public List<User> RetrieveAllUsers()
+        public List<User> RetrieveAllUserData()
         {
             return _db.Users.ToList();
         }
