@@ -9,6 +9,8 @@ import Product from './pages/product.jsx';
 import Account from './pages/account.jsx';
 import ShoppingCart from './pages/shoppingCart.jsx';
 import { ShoppingCartProvider } from './context/ShoppingCartContext.jsx';
+import CheckoutTunnel from './pages/checkoutTunnel.jsx';
+import SignIn from './pages/signIn.jsx';
 
 createRoot(document.getElementById('root')).render(
   <ShoppingCartProvider>
@@ -17,7 +19,9 @@ createRoot(document.getElementById('root')).render(
         <Route path='/' element={<Layout></Layout>}>
           <Route index element={<Home></Home>}></Route> 
           <Route path="browse" element={<Browse></Browse>}></Route>
+          <Route path="cart/checkout/tunnel" element={<CheckoutTunnel></CheckoutTunnel>}></Route>
           <Route path="albums/:id" element={<Product></Product>}></Route>
+          <Route path='login' element={<SignIn></SignIn>}></Route>
           <Route path="your-account" element={<Account></Account>}></Route>        
           <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>        
         </Route>
