@@ -8,10 +8,10 @@ export function CartModal ({album, isActive, toggleFunction}) {
     return(
         <div className={"lightbox absolute inset-0 min-h-full w-screen bg-white/50 z-550 " + (isActive ? 'show' : 'hidden')}>
 
-            <div className="modalContent m-5 bg-white relative top-1/4 flex flex-col border border-gray-400">
+            <div className="modalContent m-5 bg-white relative top-1/4 flex flex-col border border-gray-400 md:w-[35rem] m-auto">
 
                 <div className="modalHeader w-full flex flex-row bg-green-300">
-                    <button className="float-right p-4" onClick={toggleFunction}>✕</button>
+                    <button className="float-right p-4 cursor-pointer" onClick={toggleFunction}>✕</button>
                     <div className="confirmationMessage p-4 text-green-700">
                         <p>
                          {album?.name} has been added to your cart.
@@ -41,10 +41,10 @@ export function CartModal ({album, isActive, toggleFunction}) {
                         
                         <div className="flex flex-wrap justify-between">    
 
-                            <button onClick={toggleFunction} class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                            <button onClick={toggleFunction} className="cursor-pointer bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                 Continue Shopping
                             </button>
-                            <Link class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" to="/cart">
+                            <Link className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" to="/cart">
                                 View Basket
                             </Link>
                         

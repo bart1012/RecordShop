@@ -4,6 +4,7 @@
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string ImgURL { get; set; }
         public List<AlbumArtists> AlbumArtists { get; set; } = new();
     }
 }

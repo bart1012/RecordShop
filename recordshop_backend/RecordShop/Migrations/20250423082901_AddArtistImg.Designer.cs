@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecordShop;
 using RecordShop.Backend.DbContexts;
@@ -12,9 +13,11 @@ using RecordShop.Backend.DbContexts;
 namespace RecordShop.Backend.Migrations
 {
     [DbContext(typeof(RecordShopDbContext))]
-    partial class RecordShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250423082901_AddArtistImg")]
+    partial class AddArtistImg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
