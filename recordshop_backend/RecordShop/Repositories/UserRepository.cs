@@ -9,32 +9,35 @@ namespace RecordShop.Backend.Repositories
         List<User> RetrieveAllUserData();
         User? FindUser(string email);
         User UpdateUserDetails();
-        bool DeleteUser();
-        User AddUser(string email, string firstName, string lastName, string password);
+        bool DeleteUser(int id);
+        User AddUser(User user);
     }
     public class UserRepository(UserLoginDbContext db) : IUserRepository
     {
         private readonly UserLoginDbContext _db = db;
 
-        public User AddUser(string email, string firstName, string lastName, string password)
+        public User AddUser(User user)
         {
-            if (_db.Users.Any(user => user.Email == email)) throw new DuplicateUserException("This email is already associated with an existing account.");
-            User newUser = new User()
-            {
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                Password = password
-            };
-            _db.Users.Add(newUser);
+            if (_db.Users.Any(u => u.Email == user.Email)) throw new DuplicateUserException("This email is already associated with an existing account.");
+            _db.Users.Add(user);
             _db.SaveChanges();
-            return newUser;
-
+            return user;
         }
 
-        public bool DeleteUser()
+        public bool DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            if (_db.Users.Any(u => u.Id == id))
+            {
+                _db.Users.Remove(_db.Users.FirstOrDefault(u => u.Id == id));
+                _db.SaveChanges();
+                return true;
+            }
+            else
+            {
+                throw new DuplicateUserException("User not found.");
+
+            }
+
         }
 
         public User? FindUser(string email)

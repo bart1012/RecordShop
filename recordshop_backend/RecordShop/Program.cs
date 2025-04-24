@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RecordShop.Backend.DbContexts;
+using RecordShop.Backend.Repositories;
+using RecordShop.Backend.Services;
 using RecordShop.Repositories;
 using RecordShop.Services;
 using RecordShop.Utils;
@@ -37,6 +39,8 @@ namespace RecordShop
             });
             builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
             builder.Services.AddScoped<IAlbumService, AlbumService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
 
 

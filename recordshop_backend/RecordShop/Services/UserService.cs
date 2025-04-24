@@ -1,4 +1,5 @@
 ﻿using RecordShop.Backend.Models;
+using RecordShop.Backend.Repositories;
 
 namespace RecordShop.Backend.Services
 {
@@ -7,19 +8,21 @@ namespace RecordShop.Backend.Services
         List<User> RetrieveAllUserData();
         User? FindUser(string email);
         User UpdateUserDetails();
-        bool DeleteUser();
-        User AddUser(string email, string firstName, string lastName, string password);
+        bool DeleteUser(int id);
+        User AddUser(User user);
     }
-    public class UserService : IUserService
+    public class UserService(IUserRepository userRepository) : IUserService
     {
-        public User AddUser(string email, string firstName, string lastName, string password)
+        private readonly IUserRepository _userRepo = userRepository;
+        public User AddUser(User user)
         {
-            throw new NotImplementedException();
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            return _userRepo.AddUser(user);
         }
 
-        public bool DeleteUser()
+        public bool DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            return _userRepo.DeleteUser(id);
         }
 
         public User? FindUser(string email)
@@ -29,7 +32,7 @@ namespace RecordShop.Backend.Services
 
         public List<User> RetrieveAllUserData()
         {
-            throw new NotImplementedException();
+            return _userRepo.RetrieveAllUserData();
         }
 
         public User UpdateUserDetails()
