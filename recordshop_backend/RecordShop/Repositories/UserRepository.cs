@@ -11,6 +11,7 @@ namespace RecordShop.Backend.Repositories
         User UpdateUserDetails();
         bool DeleteUser(int id);
         User AddUser(User user);
+        User? RetrieveUserByEmail(string email);
     }
     public class UserRepository(UserLoginDbContext db) : IUserRepository
     {
@@ -41,6 +42,11 @@ namespace RecordShop.Backend.Repositories
         }
 
         public User? FindUser(string email)
+        {
+            return _db.Users.FirstOrDefault(u => u.Email == email);
+        }
+
+        public User? RetrieveUserByEmail(string email)
         {
             return _db.Users.FirstOrDefault(u => u.Email == email);
         }

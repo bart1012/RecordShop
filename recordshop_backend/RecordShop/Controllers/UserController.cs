@@ -36,6 +36,14 @@ namespace RecordShop.Backend.Controllers
             }
         }
 
+        [HttpPost("/login")]
+        public IActionResult PostLoginDetails(string email, string password)
+        {
+            var user = _service.Login(email, password);
+            if (user is null) return Unauthorized("Invalid credentials");
+            return Ok();
+        }
+
         [HttpDelete]
 
         public IActionResult DeleteUser(int id)
