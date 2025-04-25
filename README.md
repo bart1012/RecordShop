@@ -4,10 +4,10 @@
 
  ## Features
 
- Fetching data from an SQL database
- Ability to create user profiles
- Basic shopping cart functionality 
- Data sorting (ex. new releases) 
+ 1. Fetching data from an SQL database
+ 2. Ability to create user profiles
+ 3. Basic shopping cart functionality 
+ 4. Data sorting (ex. new releases) 
 
  ## Updates 
 
