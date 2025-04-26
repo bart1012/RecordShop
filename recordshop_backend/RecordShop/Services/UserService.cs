@@ -10,7 +10,7 @@ namespace RecordShop.Backend.Services
         User UpdateUserDetails();
         bool DeleteUser(int id);
         User AddUser(User user);
-        User? Login(string email, string password);
+        User? AuthenticateUser(string email, string password);
     }
     public class UserService(IUserRepository userRepository) : IUserService
     {
@@ -31,7 +31,7 @@ namespace RecordShop.Backend.Services
             throw new NotImplementedException();
         }
 
-        public User? Login(string email, string password)
+        public User? AuthenticateUser(string email, string password)
         {
             var user = _userRepo.RetrieveUserByEmail(email);
             if (user is null) return null;

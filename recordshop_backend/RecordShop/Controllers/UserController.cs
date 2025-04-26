@@ -39,7 +39,7 @@ namespace RecordShop.Backend.Controllers
         [HttpPost("/login")]
         public IActionResult PostLoginDetails(string email, string password)
         {
-            var user = _service.Login(email, password);
+            var user = _service.AuthenticateUser(email, password);
             if (user is null) return Unauthorized("Invalid credentials");
             return Ok();
         }

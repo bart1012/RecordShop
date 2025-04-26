@@ -80,7 +80,7 @@ namespace RecordShop.Repositories
                 //add to artist and albumArtists table 
                 foreach (var artistName in album.Artists)
                 {
-                    var artist = _db.Artists.FirstOrDefault(a => a.Name == artistName) ?? new Artist() { Name = artistName };
+                    var artist = _db.Artists.FirstOrDefault(a => a.Name == artistName) ?? new Artist() { Name = artistName, ImgURL = "" };
                     if (artist.ID == 0) { _db.Artists.Add(artist); _db.SaveChanges(); }
                     _db.AlbumArtists.Add(new AlbumArtists() { AlbumID = albumEntity.ID, ArtistID = artist.ID });
                 }

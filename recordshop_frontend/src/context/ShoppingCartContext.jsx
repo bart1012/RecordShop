@@ -25,8 +25,9 @@ export function ShoppingCartProvider({ children }) {
         setCart((prevCart ) => [...prevCart , album] );   
     }
 
-    function DecreaseCartQuantity() {
-        setCart(prevCart  => (prevCart  > 0 ? prevCart  - 1 : 0)); 
+    function DecreaseCartQuantity(album) {
+        console.log("Descrese qun triggered");
+        setCart(prevCart  => (prevCart.filter(i => i !== album))); 
     }
 
  

@@ -78,7 +78,7 @@ namespace RecordShop.Services
         public List<AlbumDTO>? RetrieveNewReleases()
         {
 
-            DateTime oldestPossibleDate = DateTime.Now.Subtract(new TimeSpan(30 * 3, 0, 0, 0));
+            DateTime oldestPossibleDate = DateTime.Now.Subtract(new TimeSpan(547, 0, 0, 0));
 
             var albumData = _albumRepo.RetrieveAllAlbums().Where(a => a.ReleaseYear <= DateTime.Now && a.ReleaseYear > oldestPossibleDate).ToList();
             return albumData.IsNullOrEmpty() ? null : albumData.Select(a => new AlbumDTO

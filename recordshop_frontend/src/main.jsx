@@ -11,6 +11,7 @@ import ShoppingCart from './pages/shoppingCart.jsx';
 import { ShoppingCartProvider } from './context/ShoppingCartContext.jsx';
 import CheckoutTunnel from './pages/checkoutTunnel.jsx';
 import SignIn from './pages/signIn.jsx';
+import SearchResults from './pages/searchResult.jsx';
 
 createRoot(document.getElementById('root')).render(
   <ShoppingCartProvider>
@@ -23,7 +24,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="albums/:id" element={<Product></Product>}></Route>
           <Route path='login' element={<SignIn></SignIn>}></Route>
           <Route path="your-account" element={<Account></Account>}></Route>        
-          <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>        
+          <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>
+          <Route path="search/:query" element={<SearchResults></SearchResults>}></Route> 
         </Route>
 
       </Routes>
