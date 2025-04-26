@@ -10,6 +10,7 @@ namespace RecordShop.Services
     public interface IAlbumService
     {
         public List<AlbumDTO>? RetrieveAllAlbums();
+        public List<AlbumDTO>? RetrieveAlbumsByQuery(string q);
         public AlbumDTO RetrieveAlbumByID(int id);
         public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
@@ -50,6 +51,28 @@ namespace RecordShop.Services
                     Duration = asg.Song.Duration
                 }).ToList(),
             };
+        }
+
+        public List<AlbumDTO>? RetrieveAlbumsByQuery(string q)
+        {
+            var albumsData = _albumRepo.RetrieveAlbumsByQuery(q);
+            return albumsData.IsNullOrEmpty() ? null : albumsData.Select(a => new AlbumDTO()
+            {
+                ID = a.ID,
+                Name = a.Name,
+                ReleaseYear = a.ReleaseYear,
+                TotalMinutes = a.TotalMinutes,
+                PricePence = a.PricePence,
+                ImgURL = a.ImgURL,
+                Artists = a.AlbumArtists.Select(aa => aa.Artist.Name).ToList(),
+                Genres = a.AlbumGenres.Select(ag => ag.Genre.Name).ToList(),
+                Songs = a.AlbumSongs.Select(asg => new Song
+                {
+                    ID = asg.Song.ID,
+                    Name = asg.Song.Name,
+                    Duration = asg.Song.Duration
+                }).ToList(),
+            }).ToList();
         }
 
         public List<AlbumDTO>? RetrieveAllAlbums()

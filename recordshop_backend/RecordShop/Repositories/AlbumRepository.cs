@@ -12,6 +12,7 @@ namespace RecordShop.Repositories
         public Album UpdateAlbumDetails(int id, JsonPatchDocument jsonPatch);
         public bool DeleteAlbum(int id);
         public Album AddAlbum(AlbumDTO album);
+        public List<Album> RetrieveAlbumsByQuery(string q);
     }
 
     public class AlbumRepository(RecordShopDbContext db) : IAlbumRepository
@@ -131,6 +132,23 @@ namespace RecordShop.Repositories
 
         }
 
+        public List<Album> RetrieveAlbumsByQuery(string q)
+        {
 
+            var filteredAlbums = _db.Albums
+                       .Include(a => a.AlbumArtists)
+                           .ThenInclude(aa => aa.Artist)
+                       .Include(a => a.AlbumSongs)
+                           .ThenInclude(asg => asg.Song)
+                       .Include(a => a.AlbumGenres)
+                           .ThenInclude(ag => ag.Genre)
+                       .Where(album =>
+                           album.Name.Contains(q) ||
+                           album.AlbumArtists.Any(aa => aa.Artist.Name.Contains(q))
+                       ).ToList();
+
+            return filteredAlbums;
+
+        }
     }
 }
