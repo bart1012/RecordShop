@@ -1,6 +1,6 @@
-export default function Button ({text, onClickFunction}){
+export default function Button ({text, onClickFunction, colour="gray"}){
     return(
-    <button class="bg-gray-500 hover:bg-gray-700 w-full text-white font-bold py-3 px-4 rounded-full" onClick={onClickFunction}>
+    <button class={"cursor-pointer w-full font-bold py-3 px-4 rounded-full " + (colour === "gray" ? "bg-gray-500 hover:bg-gray-700 text-white" : "bg-white hover:bg-gray-100 border border-[#2e2e2e] text-gray-500")} onClick={onClickFunction}>
         {text}
     </button>)
 }
