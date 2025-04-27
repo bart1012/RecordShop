@@ -1,11 +1,21 @@
 import React from "react";
 import { UseShoppingCart } from "../context/ShoppingCartContext";
-import { Link } from "react-router";
+import { createSearchParams, Link } from "react-router";
+import { useNavigate } from "react-router";
 
 
 const Header = () => {
 
     const {CartItemQuantity} = UseShoppingCart();
+    const navigate = useNavigate();
+    const executeSearchQuery = () => {
+        navigate({
+            pathname: "search",
+            search: createSearchParams({
+                q: document.getElementById("searchBox").value
+            }).toString()
+        })
+    }
 
     return (
         <>        
@@ -23,11 +33,18 @@ const Header = () => {
                         <div className="flex flex-row md:order-2 gap-4">
                             <div id="searchContainer-outer" className="min-w-200px ">
                                 <div id="searchContainer-inner" className="flex flex-row relative w-full">
-                                    <input
+                                    <input id="searchBox"
                                     class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-28 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                                     placeholder="Search" 
+                                    onKeyDown={
+                                        (e) => {
+                                            if(e.key === 'Enter'){
+                                                executeSearchQuery();
+                                            }
+                                        }
+                                    }
                                     />
-                                    <button className="cursor-pointer absolute top-1.5 right-1 flex items-center">
+                                    <button className="cursor-pointer absolute top-1.5 right-1 flex items-center" onClick={executeSearchQuery}>
                                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 50 50">
                                             <path fill="black" d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
                                         </svg>

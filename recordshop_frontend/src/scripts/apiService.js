@@ -40,4 +40,14 @@ const FetchMostRecent = async () => {
     }
 }
 
-export  {FetchAllAlbums, FetchAlbumByID, FetchMostRecent};
+const FetchAlbumsByQuery = async (q) => {
+    const URL = BASE_URL + 'Albums/search?q=' + q; 
+    try{
+        const response = await axios.get(URL);
+        return response.data;
+    }catch(error){
+        console.error("Error fetching albums matching this query: ", error);
+        return [];  
+    }
+}
+export  {FetchAllAlbums, FetchAlbumByID, FetchMostRecent, FetchAlbumsByQuery};

@@ -25,7 +25,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='login' element={<SignIn></SignIn>}></Route>
           <Route path="your-account" element={<Account></Account>}></Route>        
           <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>
-          <Route path="search/:query" element={<SearchResults></SearchResults>}></Route> 
+          <Route path="search" element={<SearchResults></SearchResults>}></Route> 
         </Route>
 
       </Routes>

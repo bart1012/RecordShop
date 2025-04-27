@@ -22,8 +22,8 @@ namespace RecordShop.Controllers
 
         }
 
-        [HttpGet("search/{q}")]
-        public IActionResult GetAlbumsByQuery(string q)
+        [HttpGet("search")]
+        public IActionResult GetAlbumsByQuery([FromQuery] string q)
         {
             var albumsData = _service.RetrieveAlbumsByQuery(q);
             return albumsData.IsNullOrEmpty() ? NoContent() : Ok(albumsData);
