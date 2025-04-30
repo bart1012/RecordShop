@@ -7,8 +7,8 @@ import { CheckoutMethodsModal } from "../components/checkoutMethodModal.jsx";
 
 const ShoppingCart = () => {
 
-    const {cart} = UseShoppingCart();
-    const totalPrice = cart.reduce((sum, album) => sum + (album.pricePence), 0) / 100;
+    const {cart, CartItemQuantity} = UseShoppingCart();
+    const totalPrice = cart.reduce((sum, album) => sum + (album.pricePence * album.quantity), 0) / 100;
     const [checkoutOptionsAreVisible, setCheckoutOptionsVisibility] = useState(false);
 
  
@@ -17,7 +17,7 @@ const ShoppingCart = () => {
         <div className="mb-4 col-start-4 col-span-4 mt-15">
                 <h1 className="text-2xl font-semibold w-full text-center mb-2">Cart</h1>
                 <div className="flex flex-row justify-center">
-                    <span className="itemCount">{cart.length} Items |</span>
+                    <span className="itemCount">{CartItemQuantity} Items |</span>
                     <span className="totalPrice ml-2">£{totalPrice}</span>
                 </div>
         </div>

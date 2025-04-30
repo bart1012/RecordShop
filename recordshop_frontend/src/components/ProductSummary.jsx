@@ -16,7 +16,7 @@ const ProductSummary = ({album}) => {
                                 <h4 className="text-gray-500 mb-5">{album?.artists[0]}</h4>
                                 
                                 <strong>£{album?.pricePence / 100}</strong>
-                                <span>Quantity: 1</span>
+                                <span>Quantity: {album?.quantity}</span>
                 </div>
             
             </div>

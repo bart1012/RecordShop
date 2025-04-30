@@ -18,16 +18,53 @@ export function ShoppingCartProvider({ children }) {
         sessionStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);
 
-    const CartItemQuantity = cart.length;
+    const CartItemQuantity = () => {
+        if(cart == null || cart.Lengh === 0){
+            return 0;
+        }else{
+            return cart.reduce((accumulator, album) => {
+                return accumulator + album.quantity;
+            }, 0);
+        }
+    }
 
     function IncreaseCartQuantity(album) {
-        
-        setCart((prevCart ) => [...prevCart , album] );   
+        //check if exists, if yes, increment, if no, add to cart
+        cart.map(item => {
+            console.log(item);
+        })
+        setCart((prevCart ) => {
+
+            if(prevCart.find(item => item.id === album.id) == null){
+                return   [...prevCart , {...album, quantity: 1}];
+            }else{
+                return prevCart.map(item =>
+                    item.id === album.id
+                      ? { ...item, quantity: item.quantity + 1 }
+                      : item
+                  );
+            }
+
+        } );   
     }
 
     function DecreaseCartQuantity(album) {
-        console.log("Descrese qun triggered");
-        setCart(prevCart  => (prevCart.filter(i => i !== album))); 
+
+        setCart((prevCart ) => {
+            if(prevCart.find(item => item.id === album.id).quantity === 1){
+                return   prevCart.filter(element => element.id !== album.id);
+            }else{
+                return prevCart.map(element => {
+                    if(element.id === album.id){
+                        return {...element, quantity: element.quantity - 1}
+                    }else{
+                        return element;
+                    }
+                })
+           
+            }
+
+        } );  
     }
 
  
@@ -39,24 +76,6 @@ export function ShoppingCartProvider({ children }) {
         </ShoppingCartContext.Provider>
     );
 }
-
-// export const ShoppingCartProvider = memo(({ children }) => {
-//     const [cart, setCart] = useState([]);
-
-//     // Memoize the context value
-//     const contextValue = useMemo(() => ({
-//         cart,
-//         CartItemQuantity: cart.length,
-//         IncreaseCartQuantity: (album) => setCart((prev) => [...prev, album]),
-//         DecreaseCartQuantity: () => setCart((prev) => prev.slice(0, -1)),
-//     }), [cart]);
-
-//     return (
-//         <ShoppingCartContext.Provider value={contextValue}>
-//             {children}
-//         </ShoppingCartContext.Provider>
-//     );
-// });
 
 
 
