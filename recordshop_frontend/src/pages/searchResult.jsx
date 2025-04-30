@@ -9,12 +9,8 @@ const SearchResults = () => {
     const [data, setData] = useState(null);
 
     async function FetchAlbumData(){
-        try{
-            const response = searchParams.size === 0 ? await FetchAllAlbums() : await FetchAlbumsByQuery(searchQuery);
-            setData(response);
-        }catch (error){
-            console.error("Couldn't fetch album data: ", error);
-        }
+            const response = searchQuery === "" ? await FetchAllAlbums() : await FetchAlbumsByQuery(searchQuery);
+            setData(response);    
     }
 
     useEffect(()=>{
@@ -24,7 +20,7 @@ const SearchResults = () => {
     return<main className="mx-auto lg:mt-[2rem] w-[60%]">
         <h1 className="text-2xl font-semibold mb-10">Results for: <span>{searchQuery}</span></h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center mb-15">
-            {data?.map((searchResults) => <Card album={searchResults}></Card>)}
+            {data != null && data?.map((searchResults) => <Card album={searchResults}></Card>)}
         </div>     
     </main>
 }

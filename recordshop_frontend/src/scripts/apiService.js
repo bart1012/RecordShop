@@ -3,6 +3,17 @@ import axios from "axios";
 
 const BASE_URL = 'https://localhost:7195/';
 
+const FetchAllGenres = async () => {
+    const URL = BASE_URL + 'Genres';
+    try{
+        var response = await axios.get(URL);
+        return response.data;
+    }catch(error){
+        console.error("Error fetch genre data: ", error);
+        return [];
+    }
+}
+
 const FetchAllAlbums = async () => {
     const URL = BASE_URL + 'Albums';
     try{
@@ -44,10 +55,10 @@ const FetchAlbumsByQuery = async (q) => {
     const URL = BASE_URL + 'Albums/search?q=' + q; 
     try{
         const response = await axios.get(URL);
-        return response.data;
+        return response.status === 204 ? null : response.data;
     }catch(error){
         console.error("Error fetching albums matching this query: ", error);
         return [];  
     }
 }
-export  {FetchAllAlbums, FetchAlbumByID, FetchMostRecent, FetchAlbumsByQuery};
+export  {FetchAllAlbums, FetchAlbumByID, FetchMostRecent, FetchAlbumsByQuery, FetchAllGenres};

@@ -1,0 +1,18 @@
+.scrollList::-webkit-scrollbar {
+        height: 8px;
+      }
+      
+.scrollList::-webkit-scrollbar-track {
+background: transparent;
+}
+
+.scrollList::-webkit-scrollbar-thumb {
+background: white;
+border-radius: 8px;
+}
+
+.scrollList:hover::-webkit-scrollbar-thumb {
+        background: gray;
+        border-radius: 8px;
+        }
+      

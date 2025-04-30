@@ -14,7 +14,8 @@ const Header = () => {
             search: createSearchParams({
                 q: document.getElementById("searchBox").value
             }).toString()
-        })
+        });
+
     }
 
     return (
@@ -37,11 +38,14 @@ const Header = () => {
                                     class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-28 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                                     placeholder="Search" 
                                     onKeyDown={
+
                                         (e) => {
                                             if(e.key === 'Enter'){
                                                 executeSearchQuery();
+                                                document.getElementById("searchBox").value = '';
                                             }
                                         }
+                                        
                                     }
                                     />
                                     <button className="cursor-pointer absolute top-1.5 right-1 flex items-center" onClick={executeSearchQuery}>
@@ -77,11 +81,8 @@ const Header = () => {
                                 <Link to="/new" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">New Releases</Link>
                                 </li>
                                 <li>
-                                <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Genres</a>
-                                </li>
-                                <li>
-                                <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Artists</a>
-                                </li>
+                                <Link to="/browse" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Browse</Link>
+                                </li>                           
                                 <li>
                                 <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Blog</a>
                                 </li>

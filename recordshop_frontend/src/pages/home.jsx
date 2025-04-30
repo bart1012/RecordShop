@@ -7,23 +7,20 @@ import {FetchAllAlbums, FetchMostRecent} from "../scripts/apiService";
 const Home = () => {
     const [albums, setAlbums] = useState([]); 
     const [newReleases, setNewReleases] = useState(null); 
+    const featuredImgUrls = [
+        "images/featuredBannerImages/HomePageBanner11.webp",
+        "images/featuredBannerImages/HomePageBanner2.webp",
+        "images/featuredBannerImages/HomePageBanner3.webp"
+    ];
 
-    async function fetchAllAlbums() {
-        try {
+    async function fetchAllAlbums() {    
             const response = await FetchAllAlbums();
             setAlbums(response);
-        } catch (error) {
-            console.error("Error calling backend API: ", error);
-        }
     }
 
     async function fetchNewReleases() {
-        try {
             const response = await FetchMostRecent();
             setNewReleases(response);
-        } catch (error) {
-            console.error("Error calling backend API: ", error);
-        }
     }
 
     useEffect(() => {
@@ -34,11 +31,11 @@ const Home = () => {
     return (
         <div className="h-auto w-auto flex flex-col gap-6">
    
-            <TodaysPicksCarusel imgURL={"../public/images/HomePageBanner1.webp"} />
+            <TodaysPicksCarusel imgURLs={featuredImgUrls} />
             <MobileSectionBody title={"Popular"} albums={albums}/>
-            <MobileSectionBody title={"New Releases"} albums={newReleases}/>
+            <MobileSectionBody title={"New Releases"} albums={newReleases} link={"/new"}/>
             <MobileSectionBody title={"Best Sellers"} albums={albums}/>
-            <MobileSectionBody title={"Featured Artists"} style={"rounded"}/>
+            <MobileSectionBody title={"Featured Artists"}/>
         </div>
     );
 };

@@ -41,6 +41,8 @@ namespace RecordShop
             builder.Services.AddScoped<IAlbumService, AlbumService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+            builder.Services.AddScoped<IGenreService, GenreService>();
             builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
 
 

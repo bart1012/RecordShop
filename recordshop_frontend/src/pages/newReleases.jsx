@@ -8,12 +8,8 @@ const NewReleases = () => {
     const [data, setData] = useState(null);
 
     async function FetchAlbumData(){
-        try{
             const response =  await FetchMostRecent();
-            setData(response);
-        }catch (error){
-            console.error("Couldn't fetch album data: ", error);
-        }
+            setData(response);    
     }
 
     useEffect(()=>{
