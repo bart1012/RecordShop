@@ -40,7 +40,7 @@ const Product = () => {
                 <div className="col-start-7 col-span-3 flex flex-col pl-6"> 
  
                         <h1 className="font-semibold text-2xl">{data?.name}</h1>
-                        {data?.artists.map((artist) => <h2 className=" text-gray-500 row-start-2">{artist}</h2>)}
+                        {data?.artists.map((artist) => <h2 key={artist} className=" text-gray-500 row-start-2">{artist}</h2>)}
                         <span className="row-span-2 text-lg font-semibold text-center flex items-center mr-4 mt-1">£{data?.pricePence / 100}</span>
                         <p className="mt-4 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </p>
                         <div className="flex flex-col gap-2 items-center max-w-screen mt-8 lg:mx-15">

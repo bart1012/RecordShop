@@ -6,7 +6,7 @@ namespace RecordShop.Backend.Services
     public interface IUserService
     {
         List<User> RetrieveAllUserData();
-        User? FindUser(string email);
+        bool EmailExists(string email);
         User UpdateUserDetails();
         bool DeleteUser(int id);
         User AddUser(User user);
@@ -26,10 +26,6 @@ namespace RecordShop.Backend.Services
             return _userRepo.DeleteUser(id);
         }
 
-        public User? FindUser(string email)
-        {
-            throw new NotImplementedException();
-        }
 
         public User? AuthenticateUser(string email, string password)
         {
@@ -48,6 +44,11 @@ namespace RecordShop.Backend.Services
         {
 
             throw new NotImplementedException();
+        }
+
+        public bool EmailExists(string email)
+        {
+            return _userRepo.FindUserByEmail(email) != null;
         }
     }
 }

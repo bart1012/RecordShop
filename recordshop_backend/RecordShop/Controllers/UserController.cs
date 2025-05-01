@@ -6,7 +6,7 @@ using RecordShop.Backend.Services;
 namespace RecordShop.Backend.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("/[controller]s")]
 
     public class UserController(IUserService service) : ControllerBase
     {
@@ -18,6 +18,17 @@ namespace RecordShop.Backend.Controllers
         {
             var userData = _service.RetrieveAllUserData();
             return userData.IsNullOrEmpty() ? NoContent() : Ok(userData);
+        }
+
+        [HttpGet("email-exists")]
+        public IActionResult CheckEmailExists(string email)
+        {
+            var emailExists = _service.EmailExists(email);
+            return Ok(new
+            {
+                Email = email,
+                Availability = emailExists ? "taken" : "available"
+            });
         }
 
         [HttpPost]

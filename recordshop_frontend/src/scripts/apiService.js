@@ -61,4 +61,21 @@ const FetchAlbumsByQuery = async (q) => {
         return [];  
     }
 }
-export  {FetchAllAlbums, FetchAlbumByID, FetchMostRecent, FetchAlbumsByQuery, FetchAllGenres};
+
+const EmailIsTaken = async (email) => {
+    const URL = BASE_URL + 'Users/email-exists?email=' + email; 
+    try{
+        const response = await axios.get(URL);
+        return {
+            status: "success",
+            data: response.data
+        }
+    }catch(error){
+        console.error("Error checking email against existing data ", error);
+        return {
+            status: "error",
+            message: "Something went wrong. Please try again."
+        }
+    }
+}
+export  {EmailIsTaken, FetchAllAlbums, FetchAlbumByID, FetchMostRecent, FetchAlbumsByQuery, FetchAllGenres};

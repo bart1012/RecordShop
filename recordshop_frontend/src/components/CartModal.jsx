@@ -41,10 +41,10 @@ export function CartModal ({album, isActive, toggleFunction}) {
                         
                         <div className="flex flex-wrap justify-between">    
 
-                            <button onClick={toggleFunction} className="cursor-pointer bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                            <button onClick={toggleFunction} className="cursor-pointer bg-transparent hover:bg-gray-700 text-gray-700 font-semibold hover:text-white py-2 px-4 border border-[#2e2e2e] hover:border-transparent rounded">
                                 Continue Shopping
                             </button>
-                            <Link className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" to="/cart">
+                            <Link className="cursor-pointer bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" to="/cart">
                                 View Basket
                             </Link>
                         

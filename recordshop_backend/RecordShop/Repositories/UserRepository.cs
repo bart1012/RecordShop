@@ -7,7 +7,7 @@ namespace RecordShop.Backend.Repositories
     public interface IUserRepository
     {
         List<User> RetrieveAllUserData();
-        User? FindUser(string email);
+        User? FindUserByEmail(string email);
         User UpdateUserDetails();
         bool DeleteUser(int id);
         User AddUser(User user);
@@ -41,7 +41,7 @@ namespace RecordShop.Backend.Repositories
 
         }
 
-        public User? FindUser(string email)
+        public User? FindUserByEmail(string email)
         {
             return _db.Users.FirstOrDefault(u => u.Email == email);
         }
