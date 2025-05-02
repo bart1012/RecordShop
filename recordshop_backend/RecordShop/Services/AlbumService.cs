@@ -9,31 +9,31 @@ namespace RecordShop.Services
 {
     public interface IAlbumService
     {
-        public List<AlbumDTO>? RetrieveAllAlbums();
-        public List<AlbumDTO>? RetrieveAlbumsByQuery(string q);
-        public AlbumDTO RetrieveAlbumByID(int id);
-        public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch);
-        public bool DeleteAlbum(int id);
-        public Album AddNewAlbum(AlbumDTO album);
-        public List<AlbumDTO>? RetrieveNewReleases();
+        public Task<List<AlbumDTO>?> RetrieveAllAlbumsAsync();
+        public Task<List<AlbumDTO>?> RetrieveFilteredAlbumsAsync(string q);
+        public Task<AlbumDTO?> RetrieveAlbumByIDAsync(int id);
+        public Task<Album> UpdateAlbumAsync(int id, JsonPatchDocument jsonPatch);
+        public Task<bool> AlbumDeletedAsync(int id);
+        public Task<Album> AddNewAlbumAsync(AlbumDTO album);
+        public Task<List<AlbumDTO>?> RetrieveNewReleasesAsync();
     }
     public class AlbumService(IAlbumRepository albumRepo) : IAlbumService
     {
         private readonly IAlbumRepository _albumRepo = albumRepo;
 
-        public Album AddNewAlbum(AlbumDTO album)
+        public async Task<Album> AddNewAlbumAsync(AlbumDTO album)
         {
-            return _albumRepo.AddAlbum(album);
+            return await _albumRepo.AddAlbumAsync(album);
         }
 
-        public bool DeleteAlbum(int id)
+        public async Task<bool> AlbumDeletedAsync(int id)
         {
-            return _albumRepo.DeleteAlbum(id);
+            return await _albumRepo.AlbumDeletedAsync(id);
         }
 
-        public AlbumDTO? RetrieveAlbumByID(int id)
+        public async Task<AlbumDTO?> RetrieveAlbumByIDAsync(int id)
         {
-            var albumData = _albumRepo.FindAlbumByID(id);
+            var albumData = await _albumRepo.FindAlbumByIDAsync(id);
             return albumData is null ? null : new AlbumDTO()
             {
                 ID = albumData.ID,
@@ -53,9 +53,9 @@ namespace RecordShop.Services
             };
         }
 
-        public List<AlbumDTO>? RetrieveAlbumsByQuery(string q)
+        public async Task<List<AlbumDTO>?> RetrieveFilteredAlbumsAsync(string q)
         {
-            var albumsData = _albumRepo.RetrieveAlbumsByQuery(q);
+            var albumsData = await _albumRepo.FetchFilteredAlbumsAsync(q);
             return albumsData.IsNullOrEmpty() ? null : albumsData.Select(a => new AlbumDTO()
             {
                 ID = a.ID,
@@ -75,9 +75,9 @@ namespace RecordShop.Services
             }).ToList();
         }
 
-        public List<AlbumDTO>? RetrieveAllAlbums()
+        public async Task<List<AlbumDTO>?> RetrieveAllAlbumsAsync()
         {
-            var albumData = _albumRepo.RetrieveAllAlbums();
+            var albumData = await _albumRepo.RetrieveAllAlbumsAsync();
             return albumData.IsNullOrEmpty() ? null : albumData.Select(a => new AlbumDTO
             {
                 ID = a.ID,
@@ -98,13 +98,14 @@ namespace RecordShop.Services
             }).ToList();
         }
 
-        public List<AlbumDTO>? RetrieveNewReleases()
+        public async Task<List<AlbumDTO>?> RetrieveNewReleasesAsync()
         {
 
             DateTime oldestPossibleDate = DateTime.Now.Subtract(new TimeSpan(547, 0, 0, 0));
 
-            var albumData = _albumRepo.RetrieveAllAlbums().Where(a => a.ReleaseYear <= DateTime.Now && a.ReleaseYear > oldestPossibleDate).ToList();
-            return albumData.IsNullOrEmpty() ? null : albumData.Select(a => new AlbumDTO
+            var albumData = await _albumRepo.RetrieveAllAlbumsAsync();
+            var mostRecentAlbums = albumData.Where(a => a.ReleaseYear <= DateTime.Now && a.ReleaseYear > oldestPossibleDate).ToList();
+            return mostRecentAlbums.IsNullOrEmpty() ? null : mostRecentAlbums.Select(a => new AlbumDTO
             {
                 ID = a.ID,
                 Name = a.Name,
@@ -124,9 +125,9 @@ namespace RecordShop.Services
             }).ToList();
         }
 
-        public Album UpdateAlbum(int id, JsonPatchDocument jsonPatch)
+        public async Task<Album> UpdateAlbumAsync(int id, JsonPatchDocument jsonPatch)
         {
-            return _albumRepo.UpdateAlbumDetails(id, jsonPatch);
+            return await _albumRepo.UpdateAlbumDetailsAsync(id, jsonPatch);
         }
     }
 

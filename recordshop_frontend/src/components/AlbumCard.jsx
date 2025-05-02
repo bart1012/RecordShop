@@ -7,7 +7,7 @@ const Card = ({album}) => {
     <Link to={cardURL} >
     <article className="w-auto  md:w-full ">
             <div className={"mb-2 overflow-hidden w-full h-full" }> 
-                <img className="object-cover h-full w-full"  src={album?.imgURL || "https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b"} alt={album?.Name + " album cover" || "Album Cover"}></img>
+                <img className="object-cover h-full w-full"  src={album?.imgURL || "https://myracehorse.com/app/assets/resources/img/loading-img1.png"} alt={album?.Name + " album cover" || "Album Cover"}></img>
             </div>
 
             <div>

@@ -14,59 +14,59 @@ namespace RecordShop.Controllers
         private readonly IAlbumService _service = service;
 
         [HttpGet]
-        public IActionResult GetAllAlbums()
+        public async Task<IActionResult> GetAllAlbums()
         {
 
-            var albums = _service.RetrieveAllAlbums();
+            var albums = await _service.RetrieveAllAlbumsAsync();
             return albums.IsNullOrEmpty() ? NoContent() : Ok(albums);
 
         }
 
         [HttpGet("search")]
-        public IActionResult GetAlbumsByQuery([FromQuery] string q)
+        public async Task<IActionResult> GetAlbumsByQuery([FromQuery] string q)
         {
-            var albumsData = _service.RetrieveAlbumsByQuery(q);
+            var albumsData = await _service.RetrieveFilteredAlbumsAsync(q);
             return albumsData.IsNullOrEmpty() ? NoContent() : Ok(albumsData);
 
         }
 
         [HttpGet("New")]
-        public IActionResult GetLatestReleases()
+        public async Task<IActionResult> GetLatestReleases()
         {
 
-            var albums = _service.RetrieveNewReleases();
+            var albums = await _service.RetrieveNewReleasesAsync();
             return albums.IsNullOrEmpty() ? NoContent() : Ok(albums);
 
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetAlbumById(int id)
+        public async Task<IActionResult> GetAlbumById(int id)
         {
-            var album = _service.RetrieveAlbumByID(id);
+            var album = await _service.RetrieveAlbumByIDAsync(id);
             return album is null ? NotFound() : Ok(album);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteAlbumById(int id)
+        public async Task<IActionResult> DeleteAlbumById(int id)
         {
-            bool deleteResult = _service.DeleteAlbum(id);
+            bool deleteResult = await _service.AlbumDeletedAsync(id);
             return deleteResult ? NoContent() : NotFound();
         }
 
         [HttpPatch("{id}")]
-        public IActionResult PatchAlbumById(int id, JsonPatchDocument jsonPatch)
+        public async Task<IActionResult> PatchAlbumById(int id, JsonPatchDocument jsonPatch)
         {
-            Album patchResult = _service.UpdateAlbum(id, jsonPatch);
+            Album patchResult = await _service.UpdateAlbumAsync(id, jsonPatch);
             return patchResult is null ? NotFound() : Ok(patchResult);
             //if failed, notFound, badRequest, Conflict
         }
 
         [HttpPost]
-        public IActionResult PostAlbum(AlbumDTO album)
+        public async Task<IActionResult> PostAlbum(AlbumDTO album)
         {
             try
             {
-                var albumData = _service.AddNewAlbum(album);
+                var albumData = await _service.AddNewAlbumAsync(album);
                 string uri = $"https://localhost:7195/Albums/{albumData.ID}";
                 return Created(uri, album);
 

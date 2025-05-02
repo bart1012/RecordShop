@@ -7,38 +7,38 @@ namespace RecordShop.Repositories
 {
     public interface IAlbumRepository
     {
-        public List<Album> RetrieveAllAlbums();
-        public Album FindAlbumByID(int id);
-        public Album UpdateAlbumDetails(int id, JsonPatchDocument jsonPatch);
-        public bool DeleteAlbum(int id);
-        public Album AddAlbum(AlbumDTO album);
-        public List<Album> RetrieveAlbumsByQuery(string q);
+        public Task<List<Album>> RetrieveAllAlbumsAsync();
+        public Task<Album?> FindAlbumByIDAsync(int id);
+        public Task<Album> UpdateAlbumDetailsAsync(int id, JsonPatchDocument jsonPatch);
+        public Task<bool> AlbumDeletedAsync(int id);
+        public Task<Album> AddAlbumAsync(AlbumDTO album);
+        public Task<List<Album>> FetchFilteredAlbumsAsync(string q);
     }
 
     public class AlbumRepository(RecordShopDbContext db) : IAlbumRepository
     {
         private readonly RecordShopDbContext _db = db;
 
-        public List<Album> RetrieveAllAlbums()
+        public async Task<List<Album>> RetrieveAllAlbumsAsync()
         {
 
-            return _db.Albums
+            return await _db.Albums
              .Include(a => a.AlbumArtists)
                  .ThenInclude(aa => aa.Artist)
              .Include(a => a.AlbumSongs)
                  .ThenInclude(asg => asg.Song)
              .Include(a => a.AlbumGenres)
                  .ThenInclude(ag => ag.Genre)
-             .ToList();
+             .ToListAsync();
         }
 
-
-        public bool DeleteAlbum(int id)
+        public async Task<bool> AlbumDeletedAsync(int id)
         {
             try
             {
-                _db.Albums.Remove(_db.Albums.Single(a => a.ID == id));
-                _db.SaveChanges();
+                var targetAlbum = await _db.Albums.SingleAsync(a => a.ID == id);
+                _db.Albums.Remove(targetAlbum);
+                await _db.SaveChangesAsync();
                 return true;
 
             }
@@ -48,22 +48,22 @@ namespace RecordShop.Repositories
             }
         }
 
-        public Album? FindAlbumByID(int id)
+        public async Task<Album?> FindAlbumByIDAsync(int id)
         {
-            return _db.Albums.Include(a => a.AlbumArtists)
+            return await _db.Albums.Include(a => a.AlbumArtists)
                  .ThenInclude(aa => aa.Artist)
              .Include(a => a.AlbumSongs)
                  .ThenInclude(asg => asg.Song)
              .Include(a => a.AlbumGenres)
                  .ThenInclude(ag => ag.Genre)
-             .FirstOrDefault(a => a.ID == id);
+             .FirstOrDefaultAsync(a => a.ID == id);
         }
 
-        public Album AddAlbum(AlbumDTO album)
+        public async Task<Album> AddAlbumAsync(AlbumDTO album)
         {
-            if (_db.Albums.Any(a => a.Name == album.Name && a.ReleaseYear == album.ReleaseYear)) throw new InvalidOperationException("An album with the given name and release date already exists.");
+            if (await _db.Albums.AnyAsync(a => a.Name == album.Name && a.ReleaseYear == album.ReleaseYear)) throw new InvalidOperationException("An album with the given name and release date already exists.");
 
-            using var transaction = _db.Database.BeginTransaction();
+            using var transaction = await _db.Database.BeginTransactionAsync();
 
             try
             {
@@ -75,53 +75,53 @@ namespace RecordShop.Repositories
                     TotalMinutes = album.TotalMinutes,
                     ImgURL = album.ImgURL
                 };
-                _db.Albums.Add(albumEntity);
-                _db.SaveChanges();
+                await _db.Albums.AddAsync(albumEntity);
+                await _db.SaveChangesAsync();
 
                 //add to artist and albumArtists table 
                 foreach (var artistName in album.Artists)
                 {
-                    var artist = _db.Artists.FirstOrDefault(a => a.Name == artistName) ?? new Artist() { Name = artistName, ImgURL = "" };
-                    if (artist.ID == 0) { _db.Artists.Add(artist); _db.SaveChanges(); }
-                    _db.AlbumArtists.Add(new AlbumArtists() { AlbumID = albumEntity.ID, ArtistID = artist.ID });
+                    var artist = await _db.Artists.FirstOrDefaultAsync(a => a.Name == artistName) ?? new Artist() { Name = artistName, ImgURL = "" };
+                    if (artist.ID == 0) { await _db.Artists.AddAsync(artist); await _db.SaveChangesAsync(); }
+                    await _db.AlbumArtists.AddAsync(new AlbumArtists() { AlbumID = albumEntity.ID, ArtistID = artist.ID });
                 }
 
                 //add to genre and albumGenres table 
                 foreach (var genreName in album.Genres)
                 {
-                    var genre = _db.Genres.FirstOrDefault(g => g.Name == genreName) ?? new Genre()
+                    var genre = await _db.Genres.FirstOrDefaultAsync(g => g.Name == genreName) ?? new Genre()
                     {
                         Name = genreName
                     };
-                    if (genre.ID == 0) { _db.Genres.Add(genre); _db.SaveChanges(); }
-                    _db.AlbumGenres.Add(new AlbumGenre() { AlbumID = albumEntity.ID, GenreID = genre.ID });
+                    if (genre.ID == 0) { await _db.Genres.AddAsync(genre); await _db.SaveChangesAsync(); }
+                    await _db.AlbumGenres.AddAsync(new AlbumGenre() { AlbumID = albumEntity.ID, GenreID = genre.ID });
                 }
 
                 foreach (var song in album.Songs)
                 {
-                    var songEntity = _db.Songs.FirstOrDefault(s => s.Name == song.Name && s.Duration == song.Duration) ?? song;
-                    if (songEntity.ID == 0) { _db.Songs.Add(songEntity); _db.SaveChanges(); }
-                    _db.AlbumSongs.Add(new AlbumSong() { AlbumID = albumEntity.ID, SongID = songEntity.ID });
+                    var songEntity = await _db.Songs.FirstOrDefaultAsync(s => s.Name == song.Name && s.Duration == song.Duration) ?? song;
+                    if (songEntity.ID == 0) { await _db.Songs.AddAsync(songEntity); await _db.SaveChangesAsync(); }
+                    await _db.AlbumSongs.AddAsync(new AlbumSong() { AlbumID = albumEntity.ID, SongID = songEntity.ID });
                 }
-                transaction.Commit();
+                await transaction.CommitAsync();
                 return albumEntity;
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
 
         }
 
-        public Album? UpdateAlbumDetails(int id, JsonPatchDocument jsonPatch)
+        public async Task<Album> UpdateAlbumDetailsAsync(int id, JsonPatchDocument jsonPatch)
         {
 
             try
             {
-                var dbAlbum = _db.Albums.Single(a => a.ID == id);
+                var dbAlbum = await _db.Albums.SingleAsync(a => a.ID == id);
                 jsonPatch.ApplyTo(dbAlbum);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return dbAlbum;
 
             }
@@ -132,10 +132,10 @@ namespace RecordShop.Repositories
 
         }
 
-        public List<Album> RetrieveAlbumsByQuery(string q)
+        public async Task<List<Album>> FetchFilteredAlbumsAsync(string q)
         {
 
-            var filteredAlbums = _db.Albums
+            var filteredAlbums = await _db.Albums
                        .Include(a => a.AlbumArtists)
                            .ThenInclude(aa => aa.Artist)
                        .Include(a => a.AlbumSongs)
@@ -145,7 +145,7 @@ namespace RecordShop.Repositories
                        .Where(album =>
                            album.Name.Contains(q) ||
                            album.AlbumArtists.Any(aa => aa.Artist.Name.Contains(q))
-                       ).ToList();
+                       ).ToListAsync();
 
             return filteredAlbums;
 
