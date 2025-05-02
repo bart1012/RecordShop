@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecordShop.Backend.DbContexts;
+using RecordShop.Backend.Models;
 using RecordShop.Backend.Repositories;
 using RecordShop.Backend.Services;
 using RecordShop.Repositories;
@@ -39,11 +41,12 @@ namespace RecordShop
             });
             builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
             builder.Services.AddScoped<IAlbumService, AlbumService>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IGenreRepository, GenreRepository>();
             builder.Services.AddScoped<IGenreService, GenreService>();
             builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
+            builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
+            builder.Services.AddAuthorization();
+            builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<UserLoginDbContext>().AddApiEndpoints();
 
 
 
@@ -56,7 +59,8 @@ namespace RecordShop
             app.UseCors("AllowReactApp");
             app.UseSwagger();
             app.UseSwaggerUI();
-
+            app.MapIdentityApi<User>();
+            app.UseHttpsRedirection();
 
             app.UseHttpsRedirection();
 

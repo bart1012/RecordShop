@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using RecordShop.Models;
 using RecordShop.Services;
@@ -7,12 +8,14 @@ using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 
 namespace RecordShop.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("/[controller]")]
     public class AlbumsController(IAlbumService service) : ControllerBase
     {
         private readonly IAlbumService _service = service;
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllAlbums()
         {
@@ -22,6 +25,7 @@ namespace RecordShop.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("search")]
         public async Task<IActionResult> GetAlbumsByQuery([FromQuery] string q)
         {
@@ -30,6 +34,7 @@ namespace RecordShop.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("New")]
         public async Task<IActionResult> GetLatestReleases()
         {
@@ -39,6 +44,7 @@ namespace RecordShop.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAlbumById(int id)
         {
@@ -58,7 +64,6 @@ namespace RecordShop.Controllers
         {
             Album patchResult = await _service.UpdateAlbumAsync(id, jsonPatch);
             return patchResult is null ? NotFound() : Ok(patchResult);
-            //if failed, notFound, badRequest, Conflict
         }
 
         [HttpPost]
