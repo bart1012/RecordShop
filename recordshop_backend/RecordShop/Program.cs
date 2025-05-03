@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecordShop.Backend.DbContexts;
-using RecordShop.Backend.Models;
 using RecordShop.Backend.Repositories;
 using RecordShop.Backend.Services;
 using RecordShop.Repositories;
@@ -32,7 +31,7 @@ namespace RecordShop
 
 
             });
-            builder.Services.AddDbContext<UserLoginDbContext>(options =>
+            builder.Services.AddDbContext<UserDbContext>(options =>
             {
 
                 options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopUsersDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
@@ -46,8 +45,8 @@ namespace RecordShop
             builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
             builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
             builder.Services.AddAuthorization();
-            builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<UserLoginDbContext>().AddApiEndpoints();
-
+            builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<UserDbContext>().AddApiEndpoints();
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
             var app = builder.Build();
@@ -59,13 +58,11 @@ namespace RecordShop
             app.UseCors("AllowReactApp");
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.MapIdentityApi<User>();
-            app.UseHttpsRedirection();
-
+            app.MapIdentityApi<IdentityUser>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseAuthentication();
 
             app.MapControllers();
 
