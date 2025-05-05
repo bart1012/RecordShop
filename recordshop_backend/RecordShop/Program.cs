@@ -20,21 +20,21 @@ namespace RecordShop
             {
                 policy.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
             }));
-            builder.Services.AddControllers().AddNewtonsoftJson(); ;
+            builder.Services.AddControllers().AddNewtonsoftJson();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<RecordShopDbContext>(options =>
             {
 
-                options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
+                options.UseSqlServer(builder.Configuration.GetConnectionString("AlbumDb"));
 
 
             });
             builder.Services.AddDbContext<UserDbContext>(options =>
             {
 
-                options.UseSqlServer("Server=DESKTOP-QA5JG2D\\SQLEXPRESS01;Database=RecordShopUsersDB;User Id=bart1012;Password=Krakers51!;TrustServerCertificate = True");
+                options.UseSqlServer(builder.Configuration.GetConnectionString("UserDb"));
 
 
             });
