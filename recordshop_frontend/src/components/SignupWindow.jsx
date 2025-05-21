@@ -1,13 +1,15 @@
 import React from "react";
 import Button from "./Button";
+import { RegisterNewUser } from "../scripts/apiService";
+import { useState, useEffect } from "react";
 
 const SignupWindow = ({userEmail}) => {
+    const [registrationStatus, setRegistrationStatus] = useState("NotRegistered");
     return (<section className="w-1/4 h-auto flex m-auto items-center align-center">
         <div className="w-full h-full mt-[13rem]">
             <h2 className="text-3xl  font-semibold mb-2">Create an account</h2>
             <div>
 
-                <form  action="#" method="POST">
 
                     <div className="flex flex-row mb-2 text-md text-gray-600 mb-7">
                             <span className="mr-5">{userEmail}</span>
@@ -33,10 +35,16 @@ const SignupWindow = ({userEmail}) => {
                     </div>
 
                     <div>
-                        <Button text={"Create Account"}></Button>
+                        <Button text={"Create Account"} onClickFunction={async ()=>{
+                            const response = await RegisterNewUser(userEmail, document.getElementById("password").value);
+                            if(response?.success){
+                                setRegistrationStatus("Registered");
+                            };
+                            }}></Button>
+                        {registrationStatus === "Registered" && <p>Account created successfully!</p>}
                     </div>
 
-                </form>
+               
 
         
 

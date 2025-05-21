@@ -24,15 +24,15 @@ const Registration = () => {
             <button className="text-[3rem] text-gray cursor-pointer" onClick={()=>navigate(-1)}>🡐</button>
         </header>
 
-    {pipelineStep === "emailCheck" &&
-        <EmailAvailabilityChecker redirectFunction={changePipelineStep} setUserEmailFunction={changeUserEmail}></EmailAvailabilityChecker>}
+        {pipelineStep === "emailCheck" &&
+            <EmailAvailabilityChecker redirectFunction={changePipelineStep} setUserEmailFunction={changeUserEmail}></EmailAvailabilityChecker>}
 
-    {pipelineStep === "login" &&
-        <LoginWindow userEmail={userEmail}></LoginWindow>}
+        {pipelineStep === "login" &&
+            <LoginWindow userEmail={userEmail}></LoginWindow>}
 
-    {pipelineStep === "signup" &&
-        <SignupWindow userEmail={userEmail}></SignupWindow>
-    }
+        {pipelineStep === "signup" &&
+            <SignupWindow userEmail={userEmail}></SignupWindow>
+        }
     </main>
 }
 

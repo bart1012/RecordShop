@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecordShop.Backend.DbContexts;
+using RecordShop.Backend.Models;
 using RecordShop.Backend.Repositories;
 using RecordShop.Backend.Services;
 using RecordShop.Repositories;
@@ -45,8 +46,9 @@ namespace RecordShop
             builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
             builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
             builder.Services.AddAuthorization();
-            builder.Services.AddIdentityCore<IdentityUser>().AddEntityFrameworkStores<UserDbContext>().AddApiEndpoints();
+            builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<UserDbContext>().AddApiEndpoints();
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddScoped<UserManager<User>>();
 
 
             var app = builder.Build();
@@ -58,7 +60,7 @@ namespace RecordShop
             app.UseCors("AllowReactApp");
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.MapIdentityApi<IdentityUser>();
+            app.MapCustomIdentityApi<User>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

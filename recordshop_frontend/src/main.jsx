@@ -11,6 +11,7 @@ import { ShoppingCartProvider } from './context/ShoppingCartContext.jsx';
 import SearchResults from './pages/searchResult.jsx';
 import NewReleases from './pages/newReleases.jsx';
 import Registration from './pages/registration.jsx';
+import Checkout from './pages/checkout.jsx';
 
 createRoot(document.getElementById('root')).render(
   <ShoppingCartProvider>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>
           <Route path="search" element={<SearchResults></SearchResults>}></Route> 
           <Route path="new" element={<NewReleases></NewReleases>}></Route> 
+          <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
         </Route>
 
       </Routes>

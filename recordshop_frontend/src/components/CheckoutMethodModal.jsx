@@ -29,7 +29,7 @@ export function CheckoutMethodsModal ({isActive, toggleFunction}) {
                             <span className="px-2">Or</span>
                             <hr className="flex-auto"></hr>
                         </div>
-                        <Button text={"Checkout as guest"} colour="white"></Button>
+                        <Link to="/checkout"><Button text={"Checkout as guest"} colour="white"></Button></Link>
                 </div>
 
             </div>

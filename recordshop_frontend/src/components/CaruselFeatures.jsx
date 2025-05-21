@@ -1,22 +1,64 @@
 import React from "react";
 import Card from "./AlbumCard";
+import { useEffect } from "react";
+import { useLocation } from "react-router";
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
-const TodaysPicksCarusel = ({imgURLs}) => {
+const CaruselFeatures = () => {
+
+
+
+      const featuredImgUrls = [
+        "/images/featuredBannerImages/HomePageBanner11.webp",
+        "/images/featuredBannerImages/HomePageBanner2.webp",
+        "/images/featuredBannerImages/HomePageBanner3.webp"
+    ];
+
     return (
         <>
-         <section className="w-full flex flex-col font-semibold text-xl items-center md:h-[35rem] h-[25rem] max-h-[35rem] bg-black mb-5">
+         <section className="mt-10 rounded-xl flex flex-col font-semibold text-xl items-center md:h-[25rem] max-h-[35rem] bg-black mb-5 mx-20">
           
             <div id="default-carousel" class="relative w-full h-full" data-carousel="slide">
                 <div class="relative h-full overflow-hidden">
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src={imgURLs[0]} class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."/>
+                    <div class="hidden duration-700 rounded-xl ease-in-out" data-carousel-item>
+                        <div class="flex flex-row rounded-xl absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full bg-[#ff4e4e]" >
+                            <div className="w-1/2 flex py-[5rem] px-[7rem] flex flex-col">
+                                <span className=" text-[5rem] text-white">Spring Sale</span>
+                                <span className=" text-[1.5rem] text-white">Up to 50% of selected vinyls!</span>
+                                <span className=" text-[1.5rem] text-[#ff4e4e] bg-white border rounded-full border-white p-1 w-fit px-3 mt-5">SHOP NOW</span>
+                            </div>
+                            <div className="w-1/2 flex py-[5rem]  flex flex-row ">
+                                <img src="./images/featuredBannerImages/vinyl1.jpg"></img>
+                                <img src="./images/featuredBannerImages/vinyl2.jpg"></img>             
+                            </div>
+                        </div>
                     </div>/
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>/
-                        <img src={imgURLs[1]} class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."/>
-                    </div>/
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>/
-                        <img src={imgURLs[2]} class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."/>
-                    </div>/
+                    <div class="hidden duration-700 rounded-xl ease-in-out" data-carousel-item>/
+                        <div class="flex flex-row rounded-xl absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-[#d3d3d3] w-full h-full" >
+                            <div className="w-2/3 flex py-[5rem] px-[7rem] flex flex-col">
+                                <span className=" text-[5rem] ">Rushmere Out Now!</span>
+                                <span className=" text-[1.5rem] ">Get the new album by the legendary band Mumford & Sons.</span>
+                                <span className=" text-[1.5rem]  bg-white border rounded-full border-white p-1 w-fit px-3 mt-5">SHOP NOW</span>
+                            </div>
+                            <div className="w-1/3 flex py-[5rem]  flex flex-row ">
+                                <img src="./images/featuredBannerImages/vinyl4.png"></img>
+             
+                            </div>
+                        </div>                    
+                        </div>
+                    <div class="hidden duration-700 rounded-xl ease-in-out" data-carousel-item>/
+                        <div class="flex flex-row rounded-xl absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-full h-full" >
+                           <div className="w-[50%] flex py-[5rem] px-[7rem] flex flex-col">
+                                <span className=" text-[2.5rem] text-white">All your favorite music in one place!</span>
+                                <span className=" text-[1.5rem] text-white">Explore our range of new and vintage vinyls today!</span>
+                                <span className=" text-[1.5rem] bg-white border rounded-full border-white p-1 w-fit px-3 mt-5">SHOP NOW</span>
+                            </div>
+                            <div className="w-[50%] flex mx-5 my-5 flex flex-row justify-center">
+                                <img className="rounded-xl" width={550} src="./images/featuredBannerImages/vinylsbg.jpg"></img>
+                            </div>
+                        </div>                    
+                        </div>
                 </div>
                 <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
                     <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
@@ -46,4 +88,4 @@ const TodaysPicksCarusel = ({imgURLs}) => {
     )
 }
 
-export default TodaysPicksCarusel      
+export default CaruselFeatures      

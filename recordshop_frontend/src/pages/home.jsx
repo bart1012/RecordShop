@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/AlbumCard";
-import TodaysPicksCarusel from "../components/caruselFeatures";
+import TodaysPicksCarusel from "../components/CaruselFeatures";
 import MobileSectionBody from "../components/mobileSectionBody";
 import {FetchAllAlbums, FetchMostRecent} from "../scripts/apiService";
 
 const Home = () => {
-    const [albums, setAlbums] = useState([]); 
+
+    const [albums, setAlbums] = useState(null); 
     const [newReleases, setNewReleases] = useState(null); 
-    const featuredImgUrls = [
-        "images/featuredBannerImages/HomePageBanner11.webp",
-        "images/featuredBannerImages/HomePageBanner2.webp",
-        "images/featuredBannerImages/HomePageBanner3.webp"
-    ];
+  
 
     async function fetchAllAlbums() {    
             const response = await FetchAllAlbums();
@@ -23,19 +20,17 @@ const Home = () => {
             setNewReleases(response);
     }
 
-    useEffect(() => {
-        fetchAllAlbums(); fetchNewReleases();
+    useEffect(()=>{
+        fetchAllAlbums();
+        fetchNewReleases();
     }, []);
-
 
     return (
         <div className="h-auto w-auto flex flex-col gap-6">
-   
-            <TodaysPicksCarusel imgURLs={featuredImgUrls} />
+            <TodaysPicksCarusel />
             <MobileSectionBody title={"Popular"} albums={albums}/>
             <MobileSectionBody title={"New Releases"} albums={newReleases} link={"/new"}/>
             <MobileSectionBody title={"Best Sellers"} albums={albums}/>
-            <MobileSectionBody title={"Featured Artists"}/>
         </div>
     );
 };
