@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RecordShop.Backend.DbContexts;
+using RecordShop.Backend.DTOs;
 using RecordShop.Models;
 using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
 

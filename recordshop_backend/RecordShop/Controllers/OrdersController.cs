@@ -1,0 +1,66 @@
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using RecordShop.Backend.DTOs;
+using RecordShop.Backend.Services;
+using RecordShop.Backend.Utils;
+
+namespace RecordShop.Backend.Controllers
+{
+    [ApiController]
+    //[Authorize(Roles = "Admin")]
+    [Route("/[controller]")]
+    public class OrdersController(IOrdersService service) : ControllerBase
+    {
+
+        private readonly IOrdersService _service = service;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllOrders()
+        {
+
+            var orders = await _service.RetrieveAllOrdersAsync();
+            return orders.IsNullOrEmpty() ? NoContent() : Ok(orders);
+
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderByID(int id)
+        {
+            var order = await _service.RetrieveOrderByIDAsync(id);
+            return order is null ? NotFound() : Ok(order);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrderByID(int id)
+        {
+            OperationStatus deleteResult = await _service.DeleteOrderByIDAsync(id);
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchOrderById(int id, JsonPatchDocument jsonPatch)
+        {
+            OrderDTO patchResult = await _service.UpdateOrderByIDAsync(id, jsonPatch);
+            return patchResult is null ? NotFound() : Ok(patchResult);
+        }
+
+        //[AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> PostOrder(OrderDTO order)
+        {
+            try
+            {
+                var orderData = await _service.AddNewOrderAsync(order);
+                //string uri = $"https://localhost:7195/Orders/{orderData.ID}";
+                return Created("", order);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
+    }
+}

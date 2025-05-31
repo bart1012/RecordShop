@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecordShop.Backend.Controllers
 {
@@ -14,10 +15,11 @@ namespace RecordShop.Backend.Controllers
         [HttpGet("Email-Exists")]
         public async Task<IActionResult> CheckEmailIsTaken(string email)
         {
+            bool isTaken = await _manager.Users.AnyAsync(u => u.Email == email);
             return Ok(new
             {
                 Email = email,
-                Availability = _manager.Users.Any(u => u.Email == email) ? "taken" : "available"
+                Availability = isTaken ? "taken" : "available"
             });
         }
 

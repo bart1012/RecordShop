@@ -1,6 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using RecordShop.Models;
+using System.Text.Json.Serialization;
 
-namespace RecordShop.Models
+namespace RecordShop.Backend.DTOs
 {
     public class AlbumDTO
     {

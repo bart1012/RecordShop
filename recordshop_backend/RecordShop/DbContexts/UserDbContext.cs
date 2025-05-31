@@ -7,7 +7,7 @@ namespace RecordShop.Backend.DbContexts
 
     public class UserDbContext(DbContextOptions<UserDbContext> options) : IdentityDbContext<User>(options)
     {
-        public DbSet<User> Users { get; set; }
+        public new DbSet<User> Users { get; set; }
     }
 
     //public class UserDbContext : IdentityDbContext<User>

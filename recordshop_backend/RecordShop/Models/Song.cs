@@ -6,8 +6,8 @@ namespace RecordShop.Models
     {
         [JsonIgnore]
         public int ID { get; set; }
-        public string Name { get; set; }
-        public double Duration { get; set; }
+        public required string Name { get; set; }
+        public required double Duration { get; set; }
 
     }
 }

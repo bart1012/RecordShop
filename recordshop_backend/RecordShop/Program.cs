@@ -39,10 +39,19 @@ namespace RecordShop
 
 
             });
+            builder.Services.AddDbContext<OrdersDbContext>(options =>
+            {
+
+                options.UseSqlServer(builder.Configuration.GetConnectionString("OrdersDb"));
+
+
+            });
             builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
             builder.Services.AddScoped<IAlbumService, AlbumService>();
             builder.Services.AddScoped<IGenreRepository, GenreRepository>();
             builder.Services.AddScoped<IGenreService, GenreService>();
+            builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+            builder.Services.AddScoped<IOrdersService, OrdersService>();
             builder.Services.AddSwaggerGen(c => c.DocumentFilter<JsonPatchDocumentFilter>());
             builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
             builder.Services.AddAuthorization();

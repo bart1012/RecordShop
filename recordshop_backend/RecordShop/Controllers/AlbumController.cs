@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using RecordShop.Backend.DTOs;
 using RecordShop.Models;
 using RecordShop.Services;
 using JsonPatchDocument = Microsoft.AspNetCore.JsonPatch.JsonPatchDocument;
