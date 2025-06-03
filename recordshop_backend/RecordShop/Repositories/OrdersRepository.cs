@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RecordShop.Backend.DbContexts;
 using RecordShop.Backend.DTOs;
 using RecordShop.Backend.Models;
@@ -11,16 +10,16 @@ namespace RecordShop.Backend.Repositories
     {
         public Task<List<Order>> RetrieveAllOrdersAsync();
         public Task<Order?> FindOrderByIDAsync(int id);
-        public Task<Order> UpdateOrderDetailsAsync(int id, JsonPatchDocument jsonPatch);
+        public Task<Order> UpdateOrderDetailsAsync(int id, CreateOrderDTO orderDTO);
         public Task<OperationStatus> IsOrderDeletedAsync(int id);
-        public Task<Order> AddOrderAsync(OrderDTO order);
+        public Task<Order> AddOrderAsync(CreateOrderDTO order);
     }
     public class OrdersRepository(OrdersDbContext db) : IOrdersRepository
     {
 
         private readonly OrdersDbContext _db = db;
 
-        public async Task<Order> AddOrderAsync(OrderDTO order)
+        public async Task<Order> AddOrderAsync(CreateOrderDTO order)
         {
             await using var transaction = await _db.Database.BeginTransactionAsync();
 
@@ -30,7 +29,7 @@ namespace RecordShop.Backend.Repositories
                 {
                     UserID = order.UserID,
                     TotalPence = order.TotalPence,
-                    Status = "Success",
+                    Status = OrderStatus.Purchased,
                     CreatedAt = DateTime.Now,
                 };
                 await _db.Orders.AddAsync(orderRecord);
@@ -60,12 +59,9 @@ namespace RecordShop.Backend.Repositories
                         Quantity = item.Quantity,
                         PricePence = item.TotalPriceInPence,
                         AlbumArtist = item.AlbumArtist,
-                        AlbumTitle = item.AlbumName
+                        AlbumName = item.AlbumName
                     });
                 }
-
-                order.Status = OperationResult.Success;
-                order.CreatedAt = DateTime.Now;
 
                 await _db.SaveChangesAsync();
                 await transaction.CommitAsync();
@@ -116,8 +112,22 @@ namespace RecordShop.Backend.Repositories
             return orders;
         }
 
-        public Task<Order> UpdateOrderDetailsAsync(int id, JsonPatchDocument jsonPatch)
+        public Task<Order> UpdateOrderDetailsAsync(int id, CreateOrderDTO orderDTO)
         {
+            // var targetOrder = await _db.Orders.SingleOrDefaultAsync(a => a.ID == id);
+            //if (targetOrder is null)
+            //{
+            //    return new OperationStatus() { Status = OperationResult.Failure };
+
+            //}
+            //else
+            //{
+            //    _db.Orders.Remove(targetOrder);
+            //    _db.OrderDetails.RemoveRange(_db.OrderDetails.Where(o => o.OrderID == targetOrder.ID));
+            //    _db.OrderItems.RemoveRange(_db.OrderItems.Where(o => o.OrderID == targetOrder.ID));
+            //    await _db.SaveChangesAsync();
+            //    return new OperationStatus() { Status = OperationResult.Success };
+            //}
             throw new NotImplementedException();
         }
     }

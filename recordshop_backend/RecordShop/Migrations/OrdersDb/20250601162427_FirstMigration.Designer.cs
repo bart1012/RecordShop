@@ -12,8 +12,8 @@ using RecordShop.Backend.DbContexts;
 namespace RecordShop.Backend.Migrations.OrdersDb
 {
     [DbContext(typeof(OrdersDbContext))]
-    [Migration("20250529135105_RemoveRecordCreationFromOrders")]
-    partial class RemoveRecordCreationFromOrders
+    [Migration("20250601162427_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,15 +33,14 @@ namespace RecordShop.Backend.Migrations.OrdersDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("AmountPence")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalPence")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
@@ -61,23 +60,28 @@ namespace RecordShop.Backend.Migrations.OrdersDb
 
                     b.Property<string>("AddressLine")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(254)
+                        .HasColumnType("nvarchar(254)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("OrderID")
                         .HasColumnType("int");
@@ -88,11 +92,13 @@ namespace RecordShop.Backend.Migrations.OrdersDb
 
                     b.Property<string>("Postcode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Town")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ID");
 
@@ -117,7 +123,7 @@ namespace RecordShop.Backend.Migrations.OrdersDb
                     b.Property<int>("AlbumID")
                         .HasColumnType("int");
 
-                    b.Property<string>("AlbumTitle")
+                    b.Property<string>("AlbumName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

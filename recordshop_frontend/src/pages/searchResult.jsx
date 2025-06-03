@@ -1,7 +1,7 @@
 import Card from "../components/AlbumCard";
 import {  useSearchParams } from "react-router";
 import { useState, useEffect } from "react";
-import { FetchAlbumsByQuery, FetchAllAlbums } from "../scripts/apiService";
+import { FetchAlbumsByQuery, FetchAllAlbums } from "../scripts/albumApiService";
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams();

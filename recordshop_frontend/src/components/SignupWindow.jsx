@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button";
-import { RegisterNewUser } from "../scripts/apiService";
+import { RegisterNewUser } from "../scripts/albumApiService";
 import { useState, useEffect } from "react";
 
 const SignupWindow = ({userEmail}) => {

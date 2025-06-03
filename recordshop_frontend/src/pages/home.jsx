@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/AlbumCard";
 import TodaysPicksCarusel from "../components/CaruselFeatures";
 import MobileSectionBody from "../components/mobileSectionBody";
-import {FetchAllAlbums, FetchMostRecent} from "../scripts/apiService";
+import {FetchAllAlbums, FetchMostRecent} from "../scripts/albumApiService";
 
 const Home = () => {
 

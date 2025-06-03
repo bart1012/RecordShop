@@ -18,8 +18,8 @@ namespace RecordShop.Backend.Migrations.OrdersDb
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserID = table.Column<int>(type: "int", nullable: true),
-                    AmountPence = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalPence = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -34,13 +34,14 @@ namespace RecordShop.Backend.Migrations.OrdersDb
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderID = table.Column<int>(type: "int", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressLine = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Postcode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Town = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
+                    AddressLine = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Postcode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Town = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,7 +63,9 @@ namespace RecordShop.Backend.Migrations.OrdersDb
                     OrderID = table.Column<int>(type: "int", nullable: false),
                     AlbumID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    PricePence = table.Column<int>(type: "int", nullable: false)
+                    PricePence = table.Column<int>(type: "int", nullable: false),
+                    AlbumName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AlbumArtist = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,7 +81,8 @@ namespace RecordShop.Backend.Migrations.OrdersDb
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderID",
                 table: "OrderDetails",
-                column: "OrderID");
+                column: "OrderID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderID",

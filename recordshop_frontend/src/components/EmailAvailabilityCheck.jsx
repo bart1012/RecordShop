@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "./Button";
-import { EmailIsTaken } from "../scripts/apiService";
+import { EmailIsTaken } from "../scripts/albumApiService";
 const EmailAvailabilityChecker = ({redirectFunction, setUserEmailFunction}) => {
 
     const[emailCheckerStatus, setEmailCheckerStatus] = useState(null);

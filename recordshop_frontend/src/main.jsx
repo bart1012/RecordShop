@@ -12,23 +12,26 @@ import SearchResults from './pages/searchResult.jsx';
 import NewReleases from './pages/newReleases.jsx';
 import Registration from './pages/registration.jsx';
 import Checkout from './pages/checkout.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <ShoppingCartProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/signup" element={<Registration></Registration>}></Route> 
-        <Route path='/' element={<Layout></Layout>}>
-          <Route index element={<Home></Home>}></Route> 
-          <Route path="albums/:id" element={<Product></Product>}></Route>
-          <Route path="your-account" element={<Account></Account>}></Route>        
-          <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>
-          <Route path="search" element={<SearchResults></SearchResults>}></Route> 
-          <Route path="new" element={<NewReleases></NewReleases>}></Route> 
-          <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
-        </Route>
+  <AuthProvider>
+    <ShoppingCartProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signup" element={<Registration></Registration>}></Route> 
+          <Route path='/' element={<Layout></Layout>}>
+            <Route index element={<Home></Home>}></Route> 
+            <Route path="albums/:id" element={<Product></Product>}></Route>
+            <Route path="account" element={<Account></Account>}></Route>        
+            <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>
+            <Route path="search" element={<SearchResults></SearchResults>}></Route> 
+            <Route path="new" element={<NewReleases></NewReleases>}></Route> 
+            <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
+          </Route>
 
-      </Routes>
-    </BrowserRouter>
-  </ShoppingCartProvider>
+        </Routes>
+      </BrowserRouter>
+    </ShoppingCartProvider>
+  </AuthProvider>
 )

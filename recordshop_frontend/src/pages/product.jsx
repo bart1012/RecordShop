@@ -2,7 +2,7 @@ import Card from "../components/AlbumCard"
 import { UseShoppingCart } from "../context/ShoppingCartContext"
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import {FetchAlbumByID} from "../scripts/apiService"
+import {FetchAlbumByID} from "../scripts/albumApiService"
 import Button from "../components/Button";
 import SongTab from "../components/SongTab";
 import {CartModal} from "../components/CartModal";

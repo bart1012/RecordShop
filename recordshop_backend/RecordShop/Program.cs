@@ -60,6 +60,7 @@ namespace RecordShop
             builder.Services.AddScoped<UserManager<User>>();
 
 
+
             var app = builder.Build();
 
 
@@ -69,12 +70,10 @@ namespace RecordShop
             app.UseCors("AllowReactApp");
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.MapCustomIdentityApi<User>();
             app.UseHttpsRedirection();
-
-            app.UseAuthorization();
             app.UseAuthentication();
-
+            app.UseAuthorization();
+            app.MapCustomIdentityApi<User>();
             app.MapControllers();
 
             app.Run();

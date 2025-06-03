@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import { useNavigate } from "react-router";
-import { EmailIsTaken } from "../scripts/apiService";
+import { EmailIsTaken } from "../scripts/albumApiService";
 import EmailAvailabilityChecker from "../components/emailAvailabilityCheck";
 import LoginWindow from "../components/LogInWindow";
 import SignupWindow from "../components/SignupWindow";

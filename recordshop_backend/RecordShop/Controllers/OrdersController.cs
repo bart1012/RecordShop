@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using RecordShop.Backend.DTOs;
 using RecordShop.Backend.Services;
@@ -35,25 +34,25 @@ namespace RecordShop.Backend.Controllers
         public async Task<IActionResult> DeleteOrderByID(int id)
         {
             OperationStatus deleteResult = await _service.DeleteOrderByIDAsync(id);
-            return NoContent();
+            return deleteResult.Status == OperationResult.Success ? NoContent() : NotFound();
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchOrderById(int id, JsonPatchDocument jsonPatch)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutOrderById(int id, CreateOrderDTO orderReplacement)
         {
-            OrderDTO patchResult = await _service.UpdateOrderByIDAsync(id, jsonPatch);
+            OrderSummaryDTO patchResult = await _service.UpdateOrderByIDAsync(id, orderReplacement);
             return patchResult is null ? NotFound() : Ok(patchResult);
         }
 
         //[AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> PostOrder(OrderDTO order)
+        public async Task<IActionResult> PostOrder(CreateOrderDTO order)
         {
             try
             {
                 var orderData = await _service.AddNewOrderAsync(order);
-                //string uri = $"https://localhost:7195/Orders/{orderData.ID}";
-                return Created("", order);
+                string uri = $"https://localhost:7195/Orders/{orderData.ID}";
+                return Created(uri, order);
 
             }
             catch (Exception ex)

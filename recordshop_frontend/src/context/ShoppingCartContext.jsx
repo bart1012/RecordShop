@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, memo, useMemo, useEffect } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 
 
 const ShoppingCartContext = createContext();
@@ -29,10 +29,7 @@ export function ShoppingCartProvider({ children }) {
     }
 
     function IncreaseCartQuantity(album) {
-        //check if exists, if yes, increment, if no, add to cart
-        cart.map(item => {
-            console.log(item);
-        })
+       
         setCart((prevCart ) => {
 
             if(prevCart.find(item => item.id === album.id) == null){

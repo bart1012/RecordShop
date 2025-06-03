@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using RecordShop.Backend.DTOs;
 using RecordShop.Backend.Models;
@@ -126,6 +127,34 @@ public static class IdentityApiEndpointRouteBuilderExtensions
 
             // The signInManager already produced the needed response in the form of a cookie or bearer token.
             return TypedResults.Empty;
+        });
+
+        routeGroup.MapPost("/logout", async (SignInManager<TUser> signInManager,
+        [FromBody] object empty) =>
+                {
+                    if (empty != null)
+                    {
+                        await signInManager.SignOutAsync();
+                        return Results.Ok();
+                    }
+                    return Results.Unauthorized();
+                })
+        .RequireAuthorization();
+
+        routeGroup.MapGet("/check-auth", (ClaimsPrincipal user) =>
+        {
+            return user.Identity?.IsAuthenticated == true ? Results.Ok(new { Authenticated = true }) : Results.Unauthorized();
+        });
+
+        routeGroup.MapGet("/account-exists", async ([FromQuery] string email, [FromServices] UserManager<TUser> userManager) =>
+        {
+            bool isTaken = await userManager.Users.AnyAsync(u => u.Email == email);
+
+            return Results.Ok(new
+            {
+                Email = email,
+                Availability = isTaken ? "taken" : "available"
+            });
         });
 
         routeGroup.MapPost("/refresh", async Task<Results<Ok<AccessTokenResponse>, UnauthorizedHttpResult, SignInHttpResult, ChallengeHttpResult>>
