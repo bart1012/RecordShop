@@ -1,31 +1,33 @@
 import { useState, useEffect } from "react";
 import Button from "./Button";
-import { EmailIsTaken } from "../scripts/albumApiService";
-const EmailAvailabilityChecker = ({redirectFunction, setUserEmailFunction}) => {
+import { isEmailTaken } from "../scripts/authService";
+import { useNavigate } from "react-router";
+
+const EmailAvailabilityChecker = () => {
 
     const[emailCheckerStatus, setEmailCheckerStatus] = useState(null);
-    const checkIfEmailExists = async (email) => {
-        var apiResponse = await EmailIsTaken(email);
+
+    const navigate = useNavigate();
+    
+    const checkIfEmailIsTaken = async () => {
+
+        const userEmail = document.getElementById("emailInput").value;
+        const encodedUserEmail = encodeURIComponent(userEmail);
+
+
+        var apiResponse = await isEmailTaken(userEmail);
+
+        if(apiResponse.status === "success" &&
+            apiResponse.data.availability === "taken"){
+                navigate("/login?email=" + encodedUserEmail);
+                // setEmailCheckerStatus(apiResponse);
+        }else if(apiResponse.status === "success" &&
+            apiResponse.data.availability === "available"){
+                navigate("/signup?email=" + encodedUserEmail);
+        }
+
         setEmailCheckerStatus(apiResponse);
     }
-
-    useEffect(() => {
-        if(emailCheckerStatus !== null){
-            if (
-                emailCheckerStatus.status === "success" &&
-                emailCheckerStatus.data.availability === "taken"
-            ) {
-                redirectFunction("login");
-                setUserEmailFunction(emailCheckerStatus.data.email);
-            }else if (
-                emailCheckerStatus.status === "success" &&
-                emailCheckerStatus.data.availability === "available"
-            ){
-                redirectFunction("signup");
-                setUserEmailFunction(emailCheckerStatus.data.email);
-            }
-        }
-    }, [emailCheckerStatus]);
 
     return      <section className="w-1/4 h-auto flex m-auto items-center align-center">
                 <div className="w-full h-full mt-[13rem]">
@@ -34,11 +36,15 @@ const EmailAvailabilityChecker = ({redirectFunction, setUserEmailFunction}) => {
                         <span className="mr-5">Location: United Kingdom</span>
                         <span className="underline">Change</span>
                     </div>
-                    <input type="email" id="emailInput" name="email" placeholder="Email" className="h-[3.5rem] rounded-md w-full" autoComplete="off" onKeyDown={(e)=>{
-                        if(e.key === "Enter"){
-                            checkIfEmailExists(document.getElementById("emailInput").value);
-                        }
-                    }}/>
+                    
+                    <form action={async ()=> await checkIfEmailIsTaken()} method="POST">
+                        <input type="email" id="emailInput" name="email" placeholder="Email" className="h-[3.5rem] rounded-md w-full" autoComplete="off" onKeyDown={async (e)=>{
+                            if(e.key === "Enter"){
+                                await checkIfEmailIsTaken();
+                            }
+                        }}/>
+                    </form>
+          
                     <div className="mt-2 mb-5 flex flex-col">
                         {(emailCheckerStatus !== null && emailCheckerStatus.status === "error") && 
                         <p className="text-red-400 mb-3">An error has occured. Please try again.</p>}
@@ -48,7 +54,7 @@ const EmailAvailabilityChecker = ({redirectFunction, setUserEmailFunction}) => {
                             By continuing, you agree to nothing at all. We promise we won't send you spam.
                         </p>
                     </div>
-                    <Button text={"Continue"} onClickFunction={()=> checkIfEmailExists(document.getElementById("emailInput").value)}></Button>
+                    <button  type="submit" className="btn">Continue</button>
                 </div>
             </section>   
 }

@@ -62,44 +62,5 @@ const FetchAlbumsByQuery = async (q) => {
     }
 }
 
-const EmailIsTaken = async (email) => { 
-    const URL = BASE_URL + 'Users/Email-Exists?email=' + email; 
-    try{
-        const response = await axios.get(URL);
-        return {
-            status: "success",
-            data: response.data
-        }
-    }catch(error){
-        console.error("Error checking email against existing data ", error);
-        return {
-            status: "error",
-            message: "Something went wrong. Please try again."
-        }
-    }
-}
 
-const RegisterNewUser = async (uEmail, uPassword) => { 
-    const URL = BASE_URL + 'register';
-    try{
-        const response = await axios.post(URL, {
-            "email": uEmail,
-            "password": uPassword
-          });
-
-          if (response.status === 200) {
-            return { success: true };
-          } else {
-            return { success: false, error: response.data };
-          }   
-
-        }catch(error){
-        console.error("Error sending user data to the API", error);
-        return {
-            success: false,
-            message: "Something went wrong. Please try again.",
-            apiError: error
-        }
-    }
-}
-export  {RegisterNewUser, EmailIsTaken, FetchAllAlbums, FetchAlbumByID, FetchMostRecent, FetchAlbumsByQuery, FetchAllGenres};
+export  {FetchAllAlbums, FetchAlbumByID, FetchMostRecent, FetchAlbumsByQuery, FetchAllGenres};

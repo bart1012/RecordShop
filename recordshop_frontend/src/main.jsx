@@ -13,13 +13,20 @@ import NewReleases from './pages/newReleases.jsx';
 import Registration from './pages/registration.jsx';
 import Checkout from './pages/checkout.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import Login from './pages/login.jsx';
+import Lookup from './pages/lookup.jsx';
+import "./css/customStyles.css";
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <ShoppingCartProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/signup" element={<Registration></Registration>}></Route> 
+
+          <Route path="/signup" element={<Registration></Registration>}></Route>
+          <Route path="/login" element={<Login></Login>}></Route> 
+          <Route path="/lookup" element={<Lookup></Lookup>}></Route> 
+
           <Route path='/' element={<Layout></Layout>}>
             <Route index element={<Home></Home>}></Route> 
             <Route path="albums/:id" element={<Product></Product>}></Route>

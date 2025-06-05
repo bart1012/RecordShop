@@ -146,7 +146,7 @@ public static class IdentityApiEndpointRouteBuilderExtensions
             return user.Identity?.IsAuthenticated == true ? Results.Ok(new { Authenticated = true }) : Results.Unauthorized();
         });
 
-        routeGroup.MapGet("/account-exists", async ([FromQuery] string email, [FromServices] UserManager<TUser> userManager) =>
+        routeGroup.MapGet("/is-email-taken", async ([FromQuery] string email, [FromServices] UserManager<TUser> userManager) =>
         {
             bool isTaken = await userManager.Users.AnyAsync(u => u.Email == email);
 

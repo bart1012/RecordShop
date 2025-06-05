@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { useState } from "react";
 import Button from "./Button";
 
@@ -6,6 +6,7 @@ import Button from "./Button";
 
 
 export function CheckoutMethodsModal ({isActive, toggleFunction}) {
+    const location = useNavigate();
     return(
         <div className={"lightbox absolute inset-0 min-h-full w-screen bg-white/50 z-550 " + (isActive ? 'show' : 'hidden')}>
 
@@ -23,7 +24,7 @@ export function CheckoutMethodsModal ({isActive, toggleFunction}) {
                             <li className="text-sm text-gray-800">Get exclusive offers and deals</li>
                             <li className="text-sm text-gray-800">Free delivery on orders over £15.00</li>
                         </ul>
-                        <Link to="/signup"><Button text={"Continue"}></Button></Link>
+                        <Link to="/lookup" state={{from: location.pathname}}><Button text={"Continue"}></Button></Link>
                         <div className="flex flex-row my-5 items-center text-gray-600">
                             <hr className="flex-auto"></hr>
                             <span className="px-2">Or</span>
