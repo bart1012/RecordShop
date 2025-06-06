@@ -16,6 +16,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import Login from './pages/login.jsx';
 import Lookup from './pages/lookup.jsx';
 import "./css/customStyles.css";
+import OrderConfirmation from './pages/orderConfirmation.jsx';
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
@@ -34,7 +35,8 @@ createRoot(document.getElementById('root')).render(
             <Route path="cart" element={<ShoppingCart></ShoppingCart>}></Route>
             <Route path="search" element={<SearchResults></SearchResults>}></Route> 
             <Route path="new" element={<NewReleases></NewReleases>}></Route> 
-            <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
+            <Route path="checkout" element={<Checkout></Checkout>}></Route> 
+            <Route path="order-confirmation" element={<OrderConfirmation></OrderConfirmation>}></Route> 
           </Route>
 
         </Routes>

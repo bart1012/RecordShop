@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router";
 import { UseShoppingCart } from "../context/ShoppingCartContext";
 import { createOrder } from "../scripts/orderService";
+import { fetchCookieValue } from "../scripts/cookieService";
+import { useState } from "react";
 
 const CheckoutForm = () => {
-
+    const navigate = useNavigate();
     const {cart, CalculateTotalPrice} = UseShoppingCart();
+    const [orderResult, setOrderResult] = useState(null);
 
      const extractFormData = (e) => {
         e.preventDefault();
@@ -11,6 +15,9 @@ const CheckoutForm = () => {
         const orderDetails = Object.fromEntries(formData.entries());
         return orderDetails;
     }
+
+    const orderPrice = CalculateTotalPrice() / 100;
+    const totalPrice = 4.99 + orderPrice;
 
     const convertToOrderDTO = (formData) => {
         return {
@@ -42,9 +49,10 @@ const CheckoutForm = () => {
         const orderDTO = convertToOrderDTO(formData);
         const apiResponse = await createOrder(orderDTO);
         if(apiResponse.success){
-            alert("success");
+            const orderID = apiResponse.data.id;
+            navigate(`/order-confirmation?orderID=${orderID}`);
         }else{
-            alert("failure");
+            setOrderResult(apiResponse);
         }
     }
 
@@ -95,20 +103,20 @@ const CheckoutForm = () => {
                         <div class="space-y-2">
                         <dl class="flex items-center justify-between gap-4">
                             <dt class="text-base font-normal ">Price</dt>
-                            <dd class="text-base font-medium ">$6,592.00</dd>
+                            <dd class="text-base font-medium ">£{orderPrice}</dd>
                         </dl>
 
                   
 
                         <dl class="flex items-center justify-between gap-4">
                             <dt class="text-base font-normal ">Delivery</dt>
-                            <dd class="text-base font-medium ">$799</dd>
+                            <dd class="text-base font-medium ">£4.99</dd>
                         </dl>
                         </div>
 
                         <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 ">
                         <dt class="text-base font-bold ">Total</dt>
-                        <dd class="text-base font-bold ">$7,191.00</dd>
+                        <dd class="text-base font-bold ">£{totalPrice}</dd>
                         </dl>
                     </div>
 

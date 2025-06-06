@@ -56,7 +56,7 @@ namespace RecordShop.Backend.Controllers
             {
                 var orderData = await _service.AddNewOrderAsync(order);
                 string uri = $"https://localhost:7195/Orders/{orderData.ID}";
-                return Created(uri, order);
+                return Created(uri, orderData);
 
             }
             catch (Exception ex)
