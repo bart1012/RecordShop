@@ -49,13 +49,10 @@ const loginUser = async (email, password) => {
     const URL = BASE_URL + "login?useCookies=true";
 
     try{
-        console.log(email + ' ' + password);
-
         const response = await axios.post(URL, {
             "email": email, 
             "password": password
         }, {withCredentials: true});
-        console.log(response);
         return  {
             success: true,
             statusCode: response.status,
@@ -139,4 +136,4 @@ const registerUser = async (registrationDTO) => {
 };
 
 
-export  {isEmailTaken, loginUser, registerUser as postUserRegistration, checkUserAuthStatus, logoutUser};
+export  {isEmailTaken, loginUser, registerUser, checkUserAuthStatus, logoutUser};

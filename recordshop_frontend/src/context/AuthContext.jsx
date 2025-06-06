@@ -1,5 +1,5 @@
 import { useContext, createContext, useState, useEffect } from "react";
-import  { checkUserAuthStatus, loginUser, logoutUser } from "../scripts/authService";
+import  { checkUserAuthStatus, loginUser, logoutUser, registerUser } from "../scripts/authService";
 
 
 const AuthContext = createContext();
@@ -31,7 +31,6 @@ export function AuthProvider({ children }) {
         var loginResponse = await loginUser(email, password);
 
         if(loginResponse.statusCode === 200){
-            console.log(`setting isAuth to true`);
             setIsAuthenticated(true);
         }
         
@@ -49,17 +48,30 @@ export function AuthProvider({ children }) {
         
     }
     const handleRegistration = async (registrationDTO) => {
-        var apiResponse = await postUserRegistration(registrationDTO);
+
+        var apiResponse = await registerUser(registrationDTO);
 
         if(apiResponse.success &&
             apiResponse.statusCode === 200){
-                alert("new account created");
-        }else if(!apiResponse.success &&
-            apiResponse.statusCode === 400){
-                alert("error in registration");
-        }else{
-            alert("api failure");
+
+                const loginResult = await handleLogin(registrationDTO.email, registrationDTO.password);
+
+                return {
+                    isRegistered: true,
+                    isLoggedin: loginResult.success && loginResult.statusCode === 200
+                };
+
         }
+        
+        if(!apiResponse.success &&
+            apiResponse.statusCode === 400){
+                return {
+                    isRegistered: false,
+                    isLoggedin: false,
+                    message: "Validation error during registration."
+                };
+        }
+
     }
 
 

@@ -2,6 +2,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { logoutUser } from '../scripts/authService';
 import { useAuthentication } from '../context/AuthContext';
+import { Link } from 'react-router';
 
 
 export default function AccountDropdown() {
@@ -17,8 +18,8 @@ export default function AccountDropdown() {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50">
-          Options
-          <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
+                                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" stroke-width="2" aria-hidden="true"><path d="M5 22C5 16.1 8.1 12.3 12 12.2C15.9 12.1 19 16 19 21.9M12 2.79999C10.1 2.79999 8.5 4.39999 8.5 6.29999C8.5 8.19999 10.1 9.79999 12 9.79999C13.9 9.79999 15.5 8.19999 15.5 6.29999C15.5 4.39999 13.9 2.79999 12 2.79999Z" stroke="currentColor"></path></svg>                            
+
         </MenuButton>
       </div>
 
@@ -28,12 +29,12 @@ export default function AccountDropdown() {
       >
         <div className="py-1">
           <MenuItem>
-            <a
-              href="#"
+            <Link
+              to="/account"
               className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
             >
               Account settings
-            </a>
+            </Link>
           </MenuItem>
           <MenuItem>
             <a

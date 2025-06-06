@@ -7,6 +7,7 @@ import { useAuthentication } from "../context/AuthContext";
 
 const LoginWindow = ({userEmail}) => {
 
+    const [errorMessage, setErrorMessage] = useState(null);
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(null);
     const {handleLogin} = useAuthentication();
     const navigate = useNavigate();
@@ -17,20 +18,16 @@ const LoginWindow = ({userEmail}) => {
         
         const userPassword = document.getElementById("passwordInput").value;
 
-
         var apiResponse = await handleLogin(userEmail, userPassword);
 
         if(apiResponse.success &&
             apiResponse.statusCode === 200){
-                alert("user logged in");
                 navigate(fetchCookieValue('lastVisited'));
-               
         }else if(!apiResponse.success &&
             apiResponse.statusCode === 401){
-                alert("wrong password");
                 setIsPasswordCorrect(false);
-        }else{
-            alert("api failure");
+        }else if(apiResponse.apiError){
+            setErrorMessage(apiResponse.apiError);
         }
 
     }
@@ -57,10 +54,17 @@ const LoginWindow = ({userEmail}) => {
 
                         <input type="password" name="password" id="passwordInput" placeholder="Password" autocomplete="current-password" required 
                         className="rounded-md w-full mb-3 h-[3.5rem]"/>
-                        {isPasswordCorrect === false && 
+                        {(isPasswordCorrect != null && !isPasswordCorrect) && 
                             <>
                                 <div>
                                     <p className="error">Incorrect password. Please try again.</p>
+                                </div>
+                            </>
+                        }
+                        {errorMessage != null && 
+                            <>
+                                <div>
+                                    <p className="error">Error validating user. Please try again.</p>
                                 </div>
                             </>
                         }

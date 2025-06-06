@@ -2,11 +2,14 @@ import React from "react";
 import Button from "./Button";
 import { useState, useEffect } from "react";
 import { useAuthentication } from "../context/AuthContext";
+import { useNavigate } from "react-router";
+import { fetchCookieValue } from "../scripts/cookieService";
 
 const RegistrationWindow = ({userEmail}) => {
 
-    const [isPasswordValid, setIsPasswordValid] = useState(null);
+    const [passwordValidationResult, setPasswordValidationResult] = useState(null);
     const {handleRegistration} = useAuthentication();
+    const navigate = useNavigate();
 
     const extractFormData = (e) => {
         e.preventDefault();
@@ -17,10 +20,12 @@ const RegistrationWindow = ({userEmail}) => {
     }
 
     const validatePassword = (password) => {
-
-        console.log(password);
-        const isCorrectLength = password.length > 5;
-        return /^(?=.*\d)(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/.test(password) && isCorrectLength;
+        return {
+            isCorrectLength: password.length > 5,
+            hasDigit: /\d/.test(password),
+            hasSpecialCharacter: /[^a-zA-Z0-9]/.test(password),
+            hasUpperCase: /[A-Z]/.test(password)
+        };
     }
     
 
@@ -29,13 +34,16 @@ const RegistrationWindow = ({userEmail}) => {
         const formData = extractFormData(e);
         const isInputPasswordValid = validatePassword(formData.password);
 
-        if(!isInputPasswordValid){
-            setIsPasswordValid(false);
+        if(!Object.values(isInputPasswordValid).every(Boolean)){
+            setPasswordValidationResult(isInputPasswordValid);
             return;
         }
             
-        await handleRegistration(formData);
-        
+        const registrationAndLoginResult = await handleRegistration(formData);       
+
+        if(registrationAndLoginResult.isRegistered && registrationAndLoginResult.isLoggedin){
+            navigate(fetchCookieValue('lastVisited'));
+        }
     }
 
     return (<section className="w-1/4 h-auto flex m-auto grow items-center">
@@ -72,6 +80,19 @@ const RegistrationWindow = ({userEmail}) => {
                             <input type="text" name="country" id="country" placeholder="Country" autocomplete="country-name" required 
                             className="col-start-9 col-span-4 rounded-md w-full h-[3.5rem]"/>  
 
+                            {(passwordValidationResult !== null) &&    
+                            <>
+                                <div className="col-span-12 py-4 border border-red-600 p-4 bg-red-50" role="alert">
+                                    <h3 className="text-lg font-bold mb-2">Your password needs to:</h3>
+                                    <ul className="list-disc list-inside pl-2">
+                                        <li className={passwordValidationResult.hasDigit ? "text-green-600" : "text-red-600"}>have at least one digit</li>
+                                        <li className={passwordValidationResult.hasSpecialCharacter ? "text-green-600" : "text-red-600"}>have at least one non alphanumeric character</li>
+                                        <li className={passwordValidationResult.hasUpperCase ? "text-green-600" : "text-red-600"}>have at least one uppercase character</li>
+                                        <li className={passwordValidationResult.isCorrectLength ? "text-green-600" : "text-red-600"}>be at least 6 characters long</li>
+                                    </ul>
+                                </div>
+                            </>}
+
                             <div className="flex flex-row items-center gap-4 col-span-12 rounded-md w-full h-[3.5rem]">
                                 <input type="checkbox" id="conditionsCheckbox" name="conditionsCheckbox" value="Agree"></input>
                                 <label for="conditionsCheckbox">I agree to Terms of Use and I confirm I have read the Privacy Policy.</label>
@@ -79,7 +100,6 @@ const RegistrationWindow = ({userEmail}) => {
                         </div>
                         <div>
                         <button type="submit" className="btn">Create Account</button>
-                        {(isPasswordValid != null && isPasswordValid == false) && <p>Invalid password!</p>}
                         </div>
                     </form>
                

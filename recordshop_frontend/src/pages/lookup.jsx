@@ -9,7 +9,7 @@ import RegistrationWindow from "../components/RegistrationWindow";
 const Lookup = () => {
     const location = useLocation();
     const navigatedFrom = location.state?.from;
-    document.cookie = `lastVisited=${encodeURIComponent(navigatedFrom)}; path=/; max-age=300`;
+    document.cookie = `lastVisited=${encodeURIComponent(navigatedFrom)}; path=/`;
     const navigate = useNavigate();
     const [userEmail, setUserEmail] = useState(null);
     const changeUserEmail = (email) => {
