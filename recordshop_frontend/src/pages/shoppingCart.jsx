@@ -1,15 +1,25 @@
 import ProductSummary from "../components/ProductSummary.jsx"
 import { UseShoppingCart } from "../context/ShoppingCartContext.jsx"
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Button from "../components/Button.jsx";
 import { useState } from "react";
 import { CheckoutMethodsModal } from "../components/checkoutMethodModal.jsx";
+import { useAuthentication } from "../context/AuthContext.jsx";
 
 const ShoppingCart = () => {
 
+    const {isAuthenticated} = useAuthentication();
+    const navigate = useNavigate();
     const {cart, CartItemQuantity} = UseShoppingCart();
     const totalPrice = cart.reduce((sum, album) => sum + (album.pricePence * album.quantity), 0) / 100;
     const [checkoutOptionsAreVisible, setCheckoutOptionsVisibility] = useState(false);
+    const handleCheckoutClick = () => {
+        if(isAuthenticated){
+            navigate('/checkout');
+        }else{
+            setCheckoutOptionsVisibility(true);
+        }
+    }
 
  
     return <>
@@ -40,9 +50,7 @@ const ShoppingCart = () => {
                     <p className="text-black font-semibold pt-1 text-xl text-black">Total: <span className="float-right text-xl text-black">£{totalPrice}</span></p>
                     <p className="mb-15 text-xs text-gray-600">VAT Inclusive</p>
 
-              
-                    <Button text={"Checkout"} className="bg-blue-400 text-white" onClickFunction={() => {setCheckoutOptionsVisibility(true)}}>Checkout</Button>
-            
+                    <button className="btn" onClick={handleCheckoutClick}>Checkout</button>            
                 </div>
             </div>
         </div>

@@ -7,7 +7,7 @@ namespace RecordShop.Backend.Models
     {
         [Key]
         public int ID { get; set; }
-        public int? UserID { get; set; }
+        public string? UserID { get; set; }
 
         [Required]
         public int TotalPence { get; set; }

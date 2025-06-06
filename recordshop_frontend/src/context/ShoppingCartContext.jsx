@@ -11,6 +11,7 @@ export function ShoppingCartProvider({ children }) {
 
     const [cart, setCart] = useState(() => {
         const savedCart = sessionStorage.getItem("cart");
+        console.log(JSON.parse(savedCart));
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
@@ -26,6 +27,10 @@ export function ShoppingCartProvider({ children }) {
                 return accumulator + album.quantity;
             }, 0);
         }
+    }
+
+    const CalculateTotalPrice = () => {
+        return cart.reduce((sum, album) => sum + (album.pricePence * album.quantity), 0);
     }
 
     function IncreaseCartQuantity(album) {
@@ -67,7 +72,7 @@ export function ShoppingCartProvider({ children }) {
  
     return (
         <ShoppingCartContext.Provider 
-        value={{ cart, CartItemQuantity, IncreaseCartQuantity, DecreaseCartQuantity }}
+        value={{ cart, CartItemQuantity, IncreaseCartQuantity, DecreaseCartQuantity, CalculateTotalPrice }}
         >
             {children}
         </ShoppingCartContext.Provider>

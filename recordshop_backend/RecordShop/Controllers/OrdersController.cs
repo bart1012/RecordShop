@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using RecordShop.Backend.DTOs;
 using RecordShop.Backend.Services;
 using RecordShop.Backend.Utils;
+using System.Security.Claims;
 
 namespace RecordShop.Backend.Controllers
 {
@@ -48,6 +49,9 @@ namespace RecordShop.Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> PostOrder(CreateOrderDTO order)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            order.UserID = userId;
+
             try
             {
                 var orderData = await _service.AddNewOrderAsync(order);
